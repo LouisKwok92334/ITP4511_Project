@@ -75,7 +75,7 @@ public class LoginController extends HttpServlet {
                 UserInfo bean = new UserInfo();
                 bean.setUsername(username);
                 session.setAttribute("userInfo", bean);
-                targetURL = "welcome.jsp";
+                targetURL = "main.jsp";
             } else {
                 targetURL = "loginError.jsp";
             }
