@@ -52,39 +52,6 @@ public class UserDB {
             return false;
         }
     }
-
-    public void createUserInfoTable() {
-        Connection cnnct = null;
-        Statement stmnt = null;
-        try {
-            cnnct = getConnection();
-            stmnt = cnnct.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS userInfo ("
-                    + "id CHAR(5) NOT NULL, "
-                    + "username VARCHAR(25) NOT NULL, "
-                    + "password VARCHAR(25) NOT NULL, "
-                    + "PRIMARY KEY (id)"
-                    + ")";
-            stmnt.execute(sql);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (stmnt != null) {
-                try {
-                    stmnt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (cnnct != null) {
-                try {
-                    cnnct.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
     
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
