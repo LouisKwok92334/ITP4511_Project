@@ -7,6 +7,8 @@ package ict.db;
 import ict.bean.UserInfo;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,6 +18,7 @@ public class UserDB {
     private String dburl;
     private String dbUser;
     private String dbPassword;
+    private Connection connection; // Add connection variable
 
     public UserDB(String dburl, String dbUser, String dbPassword) {
         this.dburl = dburl;
@@ -63,7 +66,31 @@ public class UserDB {
             return false;
         }
     }
-    
+public boolean updateUser(UserInfo user) throws SQLException {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    try {
+        conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+        String sql = "UPDATE Users SET password = ?, role = ?, first_name = ?, last_name = ?, email = ?, phone_number = ?, updated_at = ? WHERE username = ?";
+        ps = conn.prepareStatement(sql);
+        ps.setString(1, user.getPassword());
+        ps.setString(2, user.getRole());
+        ps.setString(3, user.getFirstName());
+        ps.setString(4, user.getLastName());
+        ps.setString(5, user.getEmail());
+        ps.setString(6, user.getPhoneNumber());
+        ps.setTimestamp(7, user.getUpdatedAt());
+        ps.setString(8, user.getUsername());
+
+        int result = ps.executeUpdate();
+        return result > 0;
+    } finally {
+        if (ps != null) ps.close();
+        if (conn != null) conn.close();
+    }
+}
+
+
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
     }
