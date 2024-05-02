@@ -3,11 +3,6 @@
     Created on : 2024年5月2日, 下午6:14:34
     Author     : boscochuen
 --%>
-<%-- 
-    Document   : header
-    Created on : 2024年5月2日, 下午6:14:34
-    Author     : boscochuen
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +26,6 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="main.jsp">Home</a>
-
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="equipment?action=listAvailable">View Available Equipment</a>

@@ -1,39 +1,39 @@
 body {
-    background-color: #f8f9fa; /* 浅灰色背景，更加舒适的视觉效果 */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 改进的字体风格，适合 Windows 系统 */
-    padding: 20px; /* 页面内容的填充 */
+    background-color: #f8f9fa; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px; 
 }
 
 .header {
-    background-color: #007bff; /* 亮蓝色背景 */
-    color: white; /* 白色文字 */
+    background-color: #007bff; 
+    color: white; 
     padding: 20px;
-    border-radius: 5px; /* 圆角边框 */
-    margin-bottom: 20px; /* 底部间距 */
+    border-radius: 5px; 
+    margin-bottom: 20px; 
 }
 
 .header h1 {
-    font-size: 2.5rem; /* 大号标题字体 */
+    font-size: 2.5rem; 
 }
 
 .header h2 {
-    font-size: 1.5rem; /* 中号子标题字体 */
+    font-size: 1.5rem; 
 }
 
 p {
-    font-size: 1.2rem; /* 段落文字大小 */
-    margin-top: 20px; /* 段落顶部间距 */
+    font-size: 1.2rem;
+    margin-top: 20px; 
 }
 
 .logout-button {
-    background-color: #dc3545; /* 深红色背景 */
+    background-color: #dc3545; 
     border: none;
     padding: 10px 20px;
     color: white;
-    border-radius: 5px; /* 圆角 */
+    border-radius: 5px; 
     font-weight: bold;
     font-size: 1.2rem;
-    cursor: pointer; /* 鼠标悬停时显示手形图标 */
+    cursor: pointer;
 }
 
 form {

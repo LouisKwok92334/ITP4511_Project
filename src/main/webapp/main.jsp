@@ -12,9 +12,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Main page</title>
-    <!-- 引入 Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- 引入外部 CSS 文件 -->
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
