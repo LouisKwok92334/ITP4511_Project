@@ -27,31 +27,31 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="main.jsp">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="equipment?action=listAvailable">View Available Equipment</a>
-                    </li>
+                    <% if (!"courier".equals(userInfo.getRole())) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="equipment?action=listAvailable">View Equipments</a>
+                        </li>
+                    <% } %>
+                    <% if ("technician".equals(userInfo.getRole()) || "admin".equals(userInfo.getRole())) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Inventory Records</a>
+                        </li>
+                    <% } %>
                     <% if ("admin".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="adminController?action=manageUsers">Manage Users</a>
+                            <a class="nav-link" href="">Check-out Statistic</a>
                         </li>
-                    <% } %>
-                    <% if ("technician".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="techController?action=viewReports">View Reports</a>
-                        </li>
-                    <% } %>
-                    <% if ("staff".equals(userInfo.getRole())) { %>
-                        <li class="nav-item">
-                            <a class="nav-link" href="staffController?action=viewTasks">View Tasks</a>
+                            <a class="nav-link" href="">Manage Account</a>
                         </li>
                     <% } %>
                     <% if ("courier".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="courierController?action=trackDeliveries">Track Deliveries</a>
+                            <a class="nav-link" href="">My Task</a>
                         </li>
                     <% } %>
                     <li class="nav-item">
-                        <a class="nav-link" href="brandController?action=list">getAllBrands</a>
+                        <a class="nav-link" href="">Profile</a>
                     </li>
                 </ul>
                 <form class="d-flex" method="post" action="main">

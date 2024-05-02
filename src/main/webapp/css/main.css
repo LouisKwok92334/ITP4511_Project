@@ -25,21 +25,6 @@ p {
     margin: 20px;
 }
 
-.logout-button {
-    background-color: #dc3545; 
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 5px; 
-    font-weight: bold;
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-form {
-    margin-top: 20px;
-}
-
 hr {
     margin-top: 30px;
 }

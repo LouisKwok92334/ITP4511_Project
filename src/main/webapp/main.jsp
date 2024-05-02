@@ -16,14 +16,12 @@
 </head>
 <body>
     <jsp:include page="header.jsp"/>
-    <br>
+    
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
     <div class="header">
         <h1>Hello, <%= userInfo.getUsername() %></h1>
         <h2>Your role is: <%= userInfo.getRole() %></h2>
     </div>
     <p>Welcome to the ICT</p>
-    <hr/>
-
 </body>
 </html>
