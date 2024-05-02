@@ -67,20 +67,18 @@ public class LoginController extends HttpServlet {
     private void doAuthenticate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         String targetURL;
-        boolean isValid = db.isValidUser(username, password);
-            if (isValid) {
-                HttpSession session = request.getSession(true);
-                UserInfo bean = new UserInfo();
-                bean.setUsername(username);
-                session.setAttribute("userInfo", bean);
-                targetURL = "main.jsp";
-            } else {
-                targetURL = "loginError.jsp";
-            }
-        RequestDispatcher rd;
-        rd = getServletContext().getRequestDispatcher("/" + targetURL);
+        UserInfo userInfo = db.getUserByUsernameAndPassword(username, password);
+        if (userInfo != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("userInfo", userInfo);
+            targetURL = "main.jsp";
+        } else {
+            targetURL = "loginError.jsp";
+        }
+
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/" + targetURL);
         rd.forward(request, response);
     }
 

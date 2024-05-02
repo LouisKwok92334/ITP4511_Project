@@ -5,6 +5,7 @@
 package ict.bean;
 
 import java.io.Serializable;
+import java.sql.*;
 
 /**
  *
@@ -19,8 +20,8 @@ public class UserInfo implements Serializable {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private java.sql.Timestamp createdAt;
-    private java.sql.Timestamp updatedAt;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
 
     // 無參數的構造函數
     public UserInfo() {}
@@ -50,9 +51,9 @@ public class UserInfo implements Serializable {
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    public java.sql.Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(java.sql.Timestamp createdAt) { this.createdAt = createdAt; }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
-    public java.sql.Timestamp getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(java.sql.Timestamp updatedAt) { this.updatedAt = updatedAt; }
+    public Timestamp getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
 }

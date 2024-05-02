@@ -13,7 +13,8 @@
     </head>
     <body>
         <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>    
-        <b>Hello, <jsp:getProperty name="userInfo" property="username" /></b>
+        <b>Hello, <%= userInfo.getUsername() %></b><br>
+        <b>Your role is: <%= userInfo.getRole() %></b>
         <p>Welcome to the ICT</p>
         <form method="post" action="main">
             <input type="hidden" name="action" value="logout"/>

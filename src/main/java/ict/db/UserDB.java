@@ -4,6 +4,7 @@
  */
 package ict.db;
 
+import ict.bean.UserInfo;
 import java.io.IOException;
 import java.sql.*;
 
@@ -21,22 +22,32 @@ public class UserDB {
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
     }
-
-    public boolean isValidUser(String user, String pwd) {
-        boolean isValid = false;
+    
+    public UserInfo getUserByUsernameAndPassword(String username, String password) {
+        // 實現JDBC連接、執行SQL查詢並返回UserBean
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?")) {
-            stmt.setString(1, user);
-            stmt.setString(2, pwd);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    isValid = true;
-                }
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?")) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                UserInfo userInfo = new UserInfo();
+                userInfo.setUserId(rs.getInt("user_id"));
+                userInfo.setUsername(rs.getString("username"));
+                userInfo.setPassword(rs.getString("password"));
+                userInfo.setFirstName(rs.getString("first_name"));
+                userInfo.setLastName(rs.getString("last_name"));
+                userInfo.setEmail(rs.getString("email"));
+                userInfo.setPhoneNumber(rs.getString("phone_number"));
+                userInfo.setRole(rs.getString("role"));
+                userInfo.setCreatedAt(rs.getTimestamp("created_at"));
+                userInfo.setUpdatedAt(rs.getTimestamp("updated_at"));
+                return userInfo;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-        return isValid;
+        return null;
     }
 
     public boolean addUserInfo(String id, String user, String pwd) {
