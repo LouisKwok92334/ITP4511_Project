@@ -25,19 +25,7 @@
         <h2>Your role is: <%= userInfo.getRole() %></h2>
     </div>
     <p>Welcome to the ICT</p>
-    <form method="post" action="main">
-        <input type="hidden" name="action" value="logout"/>
-        <input type="submit" class="btn btn-primary logout-button" value="Logout" name="logoutButton"/>
-    </form>
     <hr/>
-
-    <!-- 公共链接 -->
-    <a href="brandController?action=list">getAllBrands</a><br/>
-
-    <!-- 仅管理员可见 -->
-    <% if ("admin".equals(userInfo.getRole())) { %>
-        <a href="adminController?action=manageUsers">Manage Users</a><br/>
-    <% } %>
 
 </body>
 </html>

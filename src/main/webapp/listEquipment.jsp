@@ -7,6 +7,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="ict.bean.EquipmentBean" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="header.jsp"/>
+
 <!DOCTYPE html>
 <html>
     <head>

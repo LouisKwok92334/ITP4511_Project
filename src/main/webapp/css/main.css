@@ -1,28 +1,28 @@
 body {
-    background-color: #f8f9fa; /* 浅灰色背景 */
-    font-family: 'Arial', sans-serif; /* 设置统一的字体 */
+    background-color: #f8f9fa; /* 浅灰色背景，更加舒适的视觉效果 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 改进的字体风格，适合 Windows 系统 */
+    padding: 20px; /* 页面内容的填充 */
 }
 
 .header {
-    background-color: #007bff; /* 蓝色背景 */
+    background-color: #007bff; /* 亮蓝色背景 */
     color: white; /* 白色文字 */
     padding: 20px;
     border-radius: 5px; /* 圆角边框 */
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* 底部间距 */
 }
 
-.link-section {
-    margin: 10px 0;
+.header h1 {
+    font-size: 2.5rem; /* 大号标题字体 */
 }
 
-.link-section a {
-    color: #007bff; /* 蓝色链接 */
-    text-decoration: none; /* 无下划线 */
-    font-size: 16px; /* 字体大小 */
+.header h2 {
+    font-size: 1.5rem; /* 中号子标题字体 */
 }
 
-.link-section a:hover {
-    text-decoration: underline; /* 鼠标悬停下划线 */
+p {
+    font-size: 1.2rem; /* 段落文字大小 */
+    margin-top: 20px; /* 段落顶部间距 */
 }
 
 .logout-button {
@@ -32,6 +32,8 @@ body {
     color: white;
     border-radius: 5px; /* 圆角 */
     font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer; /* 鼠标悬停时显示手形图标 */
 }
 
 form {
