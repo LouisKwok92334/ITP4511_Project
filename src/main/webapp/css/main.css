@@ -1,0 +1,43 @@
+body {
+    background-color: #f8f9fa; /* 浅灰色背景 */
+    font-family: 'Arial', sans-serif; /* 设置统一的字体 */
+}
+
+.header {
+    background-color: #007bff; /* 蓝色背景 */
+    color: white; /* 白色文字 */
+    padding: 20px;
+    border-radius: 5px; /* 圆角边框 */
+    margin-bottom: 20px;
+}
+
+.link-section {
+    margin: 10px 0;
+}
+
+.link-section a {
+    color: #007bff; /* 蓝色链接 */
+    text-decoration: none; /* 无下划线 */
+    font-size: 16px; /* 字体大小 */
+}
+
+.link-section a:hover {
+    text-decoration: underline; /* 鼠标悬停下划线 */
+}
+
+.logout-button {
+    background-color: #dc3545; /* 深红色背景 */
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px; /* 圆角 */
+    font-weight: bold;
+}
+
+form {
+    margin-top: 20px;
+}
+
+hr {
+    margin-top: 30px;
+}
