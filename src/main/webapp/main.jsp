@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="header.jsp"/>
 
 <!DOCTYPE html>
 <html>
@@ -16,6 +15,7 @@
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
     <br>
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
     <div class="header">

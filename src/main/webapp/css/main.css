@@ -1,7 +1,6 @@
 body {
     background-color: #f8f9fa; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 20px; 
 }
 
 .header {
@@ -10,6 +9,7 @@ body {
     padding: 20px;
     border-radius: 5px; 
     margin-bottom: 20px; 
+    margin: 20px;
 }
 
 .header h1 {
@@ -22,7 +22,7 @@ body {
 
 p {
     font-size: 1.2rem;
-    margin-top: 20px; 
+    margin: 20px;
 }
 
 .logout-button {
