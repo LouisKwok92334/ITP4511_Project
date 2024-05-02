@@ -51,7 +51,7 @@
                         </li>
                     <% } %>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Profile</a>
+                        <a class="nav-link" href="profile.jsp">Profile</a>
                     </li>
                 </ul>
                 <form class="d-flex" method="post" action="main">
