@@ -11,7 +11,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Main page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
@@ -21,6 +21,7 @@
     <div class="header">
         <h1>Hello, <%= userInfo.getUsername() %></h1>
         <h2>Your role is: <%= userInfo.getRole() %></h2>
+        <h2>Your User id: <%= userInfo.getUserId() %></h2>
     </div>
     <p>Welcome to the ICT</p>
 </body>

@@ -9,8 +9,10 @@
 <html>
 <head>
     <title>Update User</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <jsp:include page="header.jsp"/>
     <form action="UserServlet" method="POST">
         Username: <input type="text" name="username" required><br>
         Password: <input type="password" name="password" required><br>

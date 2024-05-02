@@ -8,20 +8,22 @@
 <%@ page import="ict.bean.EquipmentBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Calendar" %>
+<%@ page import="java.util.HashSet" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Equipment</title>
-        <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <jsp:include page="header.jsp"/>
 
         <div class="container">
+            <br>
             <h1>Available Equipment for Rent</h1>
 
             <!-- Search Bar -->
@@ -44,6 +46,12 @@
                         String currentTime = sdf.format(cal.getTime());
                         cal.add(Calendar.MONTH, 1);
                         String oneMonthLater = sdf.format(cal.getTime());
+                        
+                        HashSet<String> wishlist = (HashSet<String>) session.getAttribute("wishlist");
+                        if (wishlist == null) {
+                            wishlist = new HashSet<String>();
+                            session.setAttribute("wishlist", wishlist);
+                        }
 
                         List<EquipmentBean> equipmentList = (List<EquipmentBean>) request.getAttribute("equipmentList");
                         if (equipmentList != null) {
@@ -55,12 +63,21 @@
                         <td><%= equipment.getAvailableQuantity() %></td>
                         <td><%= equipment.getLocation() %></td>
                         <td>
-                            <form action="yourActionForReserveOrWishList" method="POST">
+                            <form action="" method="POST" style="display: inline;">
                                 <!-- Reserve Button -->
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reserveModal<%= equipment.getEquipmentId() %>">Reserve</button>
-                                <!-- Add to Wish List Button -->
-                                <button type="submit" class="btn btn-secondary">Add to Wish List</button>
                             </form>
+                            <form action="AddToWishListServlet" method="POST" style="display: inline;">
+                                <input type="hidden" name="user_id" value="<%= userInfo.getUserId() %>">
+                                <input type="hidden" name="equipmentId" value="<%= equipment.getEquipmentId() %>">
+                                <!-- Display icon or button based on wishlist status -->
+                                <% if (wishlist.contains(equipment.getEquipmentId())) { %>
+                                    <button class="btn btn-success" disabled></i> ❤️</button>
+                                <% } else { %>
+                                    <button type="submit" class="btn btn-outline-primary"></i>♡</button>
+                                <% } %>
+                            </form>
+                            
                         </td>
                     </tr>
                     <% 
@@ -87,7 +104,7 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                            <input type="hidden" name="user_id">
+                            <input type="hidden" name="user_id" value="<%= userInfo.getUserId() %>">
                             <input type="hidden" name="equipment_id" value="<%= equipment.getEquipmentId() %>">
                             <div class="form-group">
                                 <label>Quantity</label>

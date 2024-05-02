@@ -73,6 +73,7 @@ public class LoginController extends HttpServlet {
         if (userInfo != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("userInfo", userInfo);
+            session.setAttribute("userId", userInfo.getUserId());
             targetURL = "main.jsp";
         } else {
             targetURL = "loginError.jsp";
