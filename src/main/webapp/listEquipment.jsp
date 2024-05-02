@@ -4,6 +4,8 @@
     Author     : puinamkwok
 --%>
 
+<%@ page import="java.util.List" %>
+<%@ page import="ict.bean.EquipmentBean" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
