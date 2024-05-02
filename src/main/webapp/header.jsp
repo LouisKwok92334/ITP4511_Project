@@ -21,9 +21,8 @@
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="https://hkiit.edu.hk/">
                 <img src="img/download.png" alt="Logo"> 
-                Booking System
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,7 +30,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="main.jsp">Home</a>
+
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="equipment?action=listAvailable">View Available Equipment</a>
