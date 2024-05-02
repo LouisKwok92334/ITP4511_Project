@@ -54,11 +54,11 @@ public class ResetTablesData {
         
         // 插入Users表的預設資料
         String insertUsersData = "INSERT INTO Users (username, password, role, first_name, last_name, email, phone_number) VALUES " +
-                "('user1', 'password', 'user', 'John', 'Doe', 'john.doe@example.com', '1234567890')," +
-                "('staff1', 'password', 'staff', 'Jane', 'Smith', 'jane.smith@example.com', '9876543210')," +
-                "('tech1', 'password', 'technician', 'Tom', 'Taylor', 'tom.taylor@example.com', '1234512345')," +
-                "('admin1', 'password', 'admin', 'Alice', 'Anderson', 'alice.anderson@example.com', '9876598765')," +
-                "('courier1', 'password', 'courier', 'Charlie', 'Chaplin', 'charlie.chaplin@example.com', '1357913579');";
+                "('user1', 'abc17823', 'user', 'John', 'Doe', 'john.doe@example.com', '1234567890')," +
+                "('staff1', 'abc17823', 'staff', 'Jane', 'Smith', 'jane.smith@example.com', '9876543210')," +
+                "('tech1', 'abc17823', 'technician', 'Tom', 'Taylor', 'tom.taylor@example.com', '1234512345')," +
+                "('admin1', 'abc17823', 'admin', 'Alice', 'Anderson', 'alice.anderson@example.com', '9876598765')," +
+                "('courier1', 'abc17823', 'courier', 'Charlie', 'Chaplin', 'charlie.chaplin@example.com', '1357913579');";
         stmt.execute(insertUsersData);
 
         // 插入Equipment表的預設資料

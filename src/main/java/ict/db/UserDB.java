@@ -25,7 +25,7 @@ public class UserDB {
     public boolean isValidUser(String user, String pwd) {
         boolean isValid = false;
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM userInfo WHERE username=? AND password=?")) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Users WHERE username=? AND password=?")) {
             stmt.setString(1, user);
             stmt.setString(2, pwd);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -41,7 +41,7 @@ public class UserDB {
 
     public boolean addUserInfo(String id, String user, String pwd) {
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO userInfo (ID, USERNAME, PASSWORD) VALUES (?, ?, ?)")) {
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Users (ID, USERNAME, PASSWORD) VALUES (?, ?, ?)")) {
             stmt.setString(1, id);
             stmt.setString(2, user);
             stmt.setString(3, pwd);
