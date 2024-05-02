@@ -34,9 +34,9 @@ public class EquipmentServlet extends HttpServlet {
         }
         
        String dbUser = this.getServletContext().getInitParameter("dbUser");
-        String dbPassword = this.getServletContext().getInitParameter("dbPassword");
-        String dbUrl = this.getServletContext().getInitParameter("dbUrl");
-        equipmentDB = new EquipmentDB(dbUrl, dbUser, dbPassword);
+       String dbPassword = this.getServletContext().getInitParameter("dbPassword");
+       String dbUrl = this.getServletContext().getInitParameter("dbUrl");
+       equipmentDB = new EquipmentDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
