@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import ict.db.EquipmentDB;
 import jakarta.servlet.RequestDispatcher;
+import java.util.List;
 /**
  *
  * @author puinamkwok
@@ -32,20 +33,19 @@ public class EquipmentServlet extends HttpServlet {
             throw new ServletException("MySQL JDBC driver not found", e);
         }
         
-        String dbUrl = getServletContext().getInitParameter("dbUrl");
-        String user = getServletContext().getInitParameter("dbUser");
-        String password = getServletContext().getInitParameter("dbPassword");
-        equipmentDB = new EquipmentDB(dbUrl, user, password);
+       String dbUser = this.getServletContext().getInitParameter("dbUser");
+        String dbPassword = this.getServletContext().getInitParameter("dbPassword");
+        String dbUrl = this.getServletContext().getInitParameter("dbUrl");
+        equipmentDB = new EquipmentDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if ("view".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            EquipmentBean equipment = equipmentDB.getEquipmentById(id);
-            request.setAttribute("equipment", equipment);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("equipmentDetails.jsp");
+        if ("listAvailable".equals(action)) {
+            List<EquipmentBean> equipmentList = equipmentDB.getAllAvailableEquipment();
+            request.setAttribute("equipmentList", equipmentList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("listEquipment.jsp");
             dispatcher.forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);

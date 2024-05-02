@@ -23,8 +23,8 @@
         <hr/>
         
         <!-- 公共链接 -->
-        <a href="brandController?action=list">getAllBrands</a><br/>
-
+        <a href="equipment?action=listAvailable">View Available Equipment</a><br/>
+        
         <!-- 仅管理员可见 -->
         <% if ("admin".equals(userInfo.getRole())) { %>
             <a href="adminController?action=manageUsers">Manage Users</a><br/>
