@@ -7,27 +7,29 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login page</title>
-    </head>
-    <body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Login page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <h2 class="login-title">Login to Your Account</h2>
         <form method="post" action="main">
             <input type="hidden" name="action" value="authenticate"/>
-            <table border="0">
-                <tr>
-                    <td><p align="right"><b>login：</b></p></td>
-                    <td><p><input type="text" name="username" maxLength="10" size="15" value="admin1"></p></td>
-                </tr>
-                <tr>
-                    <td><p align="right"><b>password：</b></p></td>
-                    <td><p><input type="password" name="password" maxLength="10" size="15" value="abc17823"></p></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><p align="center"><input type="submit" value="Login"></p></td>
-                </tr>
-            </table>
+            <div class="mb-3">
+                <label for="username" class="form-label">Login</label>
+                <input type="text" class="form-control" name="username" maxLength="10" id="username" value="user1">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" maxLength="10" id="password" value="abc17823">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
         </form>
-    </body>
+    </div>
+</body>
 </html>
-

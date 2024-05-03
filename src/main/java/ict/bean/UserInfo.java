@@ -25,6 +25,19 @@ public class UserInfo implements Serializable {
 
     // 無參數的構造函數
     public UserInfo() {}
+    
+public UserInfo(String username, String password, String role, String firstName, String lastName, String email, String phoneNumber) {
+    this.username = username;
+    this.password = password;
+    this.role = role;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    // Set default values or leave them null depending on the logic of your application
+    this.createdAt = new Timestamp(System.currentTimeMillis()); // Defaults to current time
+    this.updatedAt = new Timestamp(System.currentTimeMillis()); // Defaults to current time
+}
 
     // Getter 和 Setter 方法
     public int getUserId() { return userId; }
