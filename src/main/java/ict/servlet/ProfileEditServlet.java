@@ -12,13 +12,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ict.bean.UserInfo;
+import ict.bean.UserProfile;
 import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/UserServlet")
 public class ProfileEditServlet extends HttpServlet {
-
     private UserDB db;
 
     @Override
@@ -59,17 +59,16 @@ public class ProfileEditServlet extends HttpServlet {
         // Code to update user details if needed
         String username = checkInput(request.getParameter("username"));
         String password = checkInput(request.getParameter("password"));
-        String role = checkInput(request.getParameter("role"));
         String firstName = checkInput(request.getParameter("firstName"));
         String lastName = checkInput(request.getParameter("lastName"));
         String email = checkInput(request.getParameter("email"));
         String phoneNumber = checkInput(request.getParameter("phoneNumber"));
 
-        UserInfo userInfo = new UserInfo(username, password, role, firstName, lastName, email, phoneNumber);
-        userInfo.setUserId(sessionUserId);
+        UserProfile UserProfile = new UserProfile( username,  password,  firstName,  lastName,  email,  phoneNumber);
+        UserProfile.setUserId(sessionUserId);
 
         try {
-            boolean isUpdated = db.updateUser(userInfo);
+            boolean isUpdated = db.updateUser(UserProfile);
             if (isUpdated) {
                 out.println("Record Updated Successfully");
                 System.out.println("Update successful for user: " + username);

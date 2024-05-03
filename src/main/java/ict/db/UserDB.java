@@ -5,6 +5,7 @@
 package ict.db;
 
 import ict.bean.UserInfo;
+import ict.bean.UserProfile;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -95,28 +96,25 @@ public class UserDB {
         }
     }
 
-    public boolean updateUser(UserInfo userInfo) {
+    public boolean updateUser(UserProfile UserProfile) {
         StringBuilder sql = new StringBuilder("UPDATE Users SET updated_At = CURRENT_TIMESTAMP");
 
-        if (userInfo.getPassword() != null) {
+        if (UserProfile.getPassword() != null) {
             sql.append(", password = ?");
         }
-        if (userInfo.getRole() != null) {
-            sql.append(", role = ?");
-        }
-        if (userInfo.getFirstName() != null) {
+        if (UserProfile.getFirstName() != null) {
             sql.append(", first_Name = ?");
         }
-        if (userInfo.getLastName() != null) {
+        if (UserProfile.getLastName() != null) {
             sql.append(", last_Name = ?");
         }
-        if (userInfo.getEmail() != null) {
+        if (UserProfile.getEmail() != null) {
             sql.append(", email = ?");
         }
-        if (userInfo.getPhoneNumber() != null) {
+        if (UserProfile.getPhoneNumber() != null) {
             sql.append(", phone_number = ?");
         }
-        if (userInfo.getUsername() != null) {
+        if (UserProfile.getUsername() != null) {
             sql.append(", username = ?");
         }
         sql.append(" WHERE user_id = ?");
@@ -124,28 +122,26 @@ public class UserDB {
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 
             int index = 1;
-            if (userInfo.getPassword() != null) {
-                pstmt.setString(index++, userInfo.getPassword());
+            if (UserProfile.getPassword() != null) {
+                pstmt.setString(index++, UserProfile.getPassword());
             }
-            if (userInfo.getRole() != null) {
-                pstmt.setString(index++, userInfo.getRole());
+
+            if (UserProfile.getFirstName() != null) {
+                pstmt.setString(index++, UserProfile.getFirstName());
             }
-            if (userInfo.getFirstName() != null) {
-                pstmt.setString(index++, userInfo.getFirstName());
+            if (UserProfile.getLastName() != null) {
+                pstmt.setString(index++, UserProfile.getLastName());
             }
-            if (userInfo.getLastName() != null) {
-                pstmt.setString(index++, userInfo.getLastName());
+            if (UserProfile.getEmail() != null) {
+                pstmt.setString(index++, UserProfile.getEmail());
             }
-            if (userInfo.getEmail() != null) {
-                pstmt.setString(index++, userInfo.getEmail());
+            if (UserProfile.getPhoneNumber() != null) {
+                pstmt.setString(index++, UserProfile.getPhoneNumber());
             }
-            if (userInfo.getPhoneNumber() != null) {
-                pstmt.setString(index++, userInfo.getPhoneNumber());
+            if (UserProfile.getUsername() != null) {
+                pstmt.setString(index++, UserProfile.getUsername());
             }
-            if (userInfo.getUsername() != null) {
-                pstmt.setString(index++, userInfo.getUsername());
-            }
-            pstmt.setInt(index, userInfo.getUserId());
+            pstmt.setInt(index, UserProfile.getUserId());
 
             int updated = pstmt.executeUpdate();
             return updated > 0;

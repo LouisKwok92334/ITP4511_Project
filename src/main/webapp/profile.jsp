@@ -12,45 +12,35 @@
     <link href="css/profile.css" rel="stylesheet">
 </head>
 <body>
-    <jsp:include page="header.jsp"/>
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
+    <jsp:include page="header.jsp"/>
     <div class="container">
         <h2>Update User Information</h2>
         <form action="UserServlet" method="POST" class="needs-validation" novalidate>
             <input type="hidden" name="userId" value="${userInfo.userId}">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" class="form-control" id="username" value="${userInfo.username}" required>
+                <input type="text" name="username" class="form-control" id="username" >
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" name="password" class="form-control" id="password" value="" required>
-            </div>
-            <div class="form-group">
-                <label for="role">Role:</label>
-                <select name="role" class="form-control" id="role">
-                    <option value="user" ${userInfo.role eq 'user' ? 'selected' : ''}>User</option>
-                    <option value="staff" ${userInfo.role eq 'staff' ? 'selected' : ''}>Staff</option>
-                    <option value="technician" ${userInfo.role eq 'technician' ? 'selected' : ''}>Technician</option>
-                    <option value="admin" ${userInfo.role eq 'admin' ? 'selected' : ''}>Admin</option>
-                    <option value="courier" ${userInfo.role eq 'courier' ? 'selected' : ''}>Courier</option>
-                </select>
+                <input type="password" name="password" class="form-control" id="password" >
             </div>
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" name="firstName" class="form-control" id="firstName" value="${userInfo.firstName}">
+                <input type="text" name="firstName" class="form-control" id="firstName" >
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" name="lastName" class="form-control" id="lastName" value="${userInfo.lastName}">
+                <input type="text" name="lastName" class="form-control" id="lastName" >
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" class="form-control" id="email" value="${userInfo.email}">
+                <input type="email" name="email" class="form-control" id="email" >
             </div>
             <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
-                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="${userInfo.phoneNumber}">
+                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber">
             </div>
             <button type="submit" class="btn btn-primary">Update User</button>
         </form>
