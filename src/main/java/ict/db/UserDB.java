@@ -26,7 +26,36 @@ public class UserDB {
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
     }
-
+    
+  public UserInfo getUserById(int userId) {
+        UserInfo userInfo = null;
+        String sql = "SELECT * FROM Users WHERE user_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                userInfo = new UserInfo();
+                userInfo.setUserId(rs.getInt("user_id"));
+                userInfo.setUsername(rs.getString("username"));
+                userInfo.setPassword(rs.getString("password"));  // Consider security implications
+                userInfo.setRole(rs.getString("role"));
+                userInfo.setFirstName(rs.getString("first_name"));
+                userInfo.setLastName(rs.getString("last_name"));
+                userInfo.setEmail(rs.getString("email"));
+                userInfo.setPhoneNumber(rs.getString("phone_number"));
+                userInfo.setCreatedAt(rs.getTimestamp("created_at"));
+                userInfo.setUpdatedAt(rs.getTimestamp("updated_at"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userInfo;
+    }
+  
     public UserInfo getUserByUsernameAndPassword(String username, String password) {
         // 實現JDBC連接、執行SQL查詢並返回UserBean
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?")) {
