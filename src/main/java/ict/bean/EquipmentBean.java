@@ -16,6 +16,7 @@ public class EquipmentBean {
     private int availableQuantity;
     private String status;
     private String location;
+    private boolean staffOnly;
 
     public EquipmentBean() {}
 
@@ -74,5 +75,13 @@ public class EquipmentBean {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+    
+    public boolean isStaffOnly() {
+        return staffOnly;
+    }
+    
+    public void setStaffOnly(boolean staffOnly) {
+        this.staffOnly = staffOnly;
     }
 }

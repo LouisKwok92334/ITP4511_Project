@@ -36,6 +36,7 @@
                         <th>Description</th>
                         <th>Available Quantity</th>
                         <th>Location</th>
+                        <th>Staff Only</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -46,7 +47,7 @@
                         String currentTime = sdf.format(cal.getTime());
                         cal.add(Calendar.MONTH, 1);
                         String oneMonthLater = sdf.format(cal.getTime());
-                        
+
                         HashSet<String> wishlist = (HashSet<String>) session.getAttribute("wishlist");
                         if (wishlist == null) {
                             wishlist = new HashSet<String>();
@@ -54,14 +55,24 @@
                         }
 
                         List<EquipmentBean> equipmentList = (List<EquipmentBean>) request.getAttribute("equipmentList");
+                        String userRole = userInfo.getRole();
                         if (equipmentList != null) {
                             for (EquipmentBean equipment : equipmentList) {
+                                boolean staffOnly = equipment.isStaffOnly();
+                                if (("staff".equals(userRole) || "technician".equals(userRole) || "admin".equals(userRole)) || !staffOnly) {
                     %>
                     <tr>
                         <td><%= equipment.getName() %></td>
                         <td><%= equipment.getDescription() %></td>
                         <td><%= equipment.getAvailableQuantity() %></td>
                         <td><%= equipment.getLocation() %></td>
+                        <td>
+                            <% if (staffOnly) { %>
+                                Yes
+                            <% } else { %>
+                                No
+                            <% } %>
+                        </td>
                         <td>
                             <form action="" method="POST" style="display: inline;">
                                 <!-- Reserve Button -->
@@ -73,6 +84,7 @@
                         </td>
                     </tr>
                     <% 
+                                }
                             }
                         } 
                     %>

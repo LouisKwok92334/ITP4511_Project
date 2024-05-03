@@ -37,6 +37,7 @@ public class EquipmentDB {
                 equipment.setAvailableQuantity(rs.getInt("available_quantity"));
                 equipment.setStatus(rs.getString("status"));
                 equipment.setLocation(rs.getString("location"));
+                equipment.setStaffOnly(rs.getBoolean("staff_only"));
                 equipments.add(equipment);
             }
         } catch (SQLException e) {
@@ -60,6 +61,7 @@ public class EquipmentDB {
                 equipment.setAvailableQuantity(rs.getInt("available_quantity"));
                 equipment.setStatus(rs.getString("status"));
                 equipment.setLocation(rs.getString("location"));
+                equipment.setStaffOnly(rs.getBoolean("staff_only"));
                 equipments.add(equipment);
             }
         } catch (SQLException e) {
@@ -84,6 +86,7 @@ public class EquipmentDB {
                 equipment.setAvailableQuantity(rs.getInt("available_quantity"));
                 equipment.setStatus(rs.getString("status"));
                 equipment.setLocation(rs.getString("location"));
+                equipment.setStaffOnly(rs.getBoolean("staff_only"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
