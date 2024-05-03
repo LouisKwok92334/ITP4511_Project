@@ -24,8 +24,15 @@
 
         <div class="container">
             <br>
-            <h1>Available Equipment for Rent</h1>
+                <div class="row">
+                  <div class="col-md-9">
+                      <h1>Available Equipment for Rent</h1>
+                  </div>
+                  <div class="col-md-3 text-right">
+                      <button type="button" class="btn btn-info" onclick="location.href='booking?action=view'">View Booking Records</button>
 
+                  </div>
+              </div>
             <!-- Search Bar -->
             <input type="text" id="searchBar" onkeyup="searchEquipment()" placeholder="Search for equipment..." class="form-control mb-4">
 
