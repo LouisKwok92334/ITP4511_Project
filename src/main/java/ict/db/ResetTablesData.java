@@ -62,23 +62,24 @@ public class ResetTablesData {
         stmt.execute(insertUsersData);
 
         // 插入Equipment表的預設資料
-        String insertEquipmentData = "INSERT INTO Equipment (name, description, total_quantity, available_quantity, status, location) VALUES " +
-                "('Laptop 1', 'Dell XPS 15', 10, 8, 'available', 'IT Department')," +
-                "('Projector 1', 'Epson 5040UB', 5, 3, 'available', 'Conference Room')," +
-                "('Laptop 2', 'Apple MacBook Pro', 12, 10, 'available', 'IT Department')," +
-                "('Camera 1', 'Canon EOS 5D', 3, 2, 'maintenance', 'Media Room')," +
-                "('Microphone 1', 'Shure SM7B', 6, 6, 'available', 'Recording Studio')," +
-                "('Laptop 3', 'HP Spectre x360', 8, 7, 'available', 'IT Department')," +
-                "('Printer 1', 'HP LaserJet Pro', 4, 3, 'unavailable', 'Admin Office')," +
-                "('Scanner 1', 'Fujitsu ScanSnap iX1500', 5, 5, 'available', 'Main Office')," +
-                "('Laptop 4', 'Lenovo ThinkPad X1 Carbon', 7, 5, 'available', 'IT Department')," +
-                "('Tablet 1', 'Apple iPad Pro', 15, 12, 'reserved', 'Design Studio')," +
-                "('Projector 2', 'BenQ TK850', 4, 2, 'available', 'Conference Room')," +
-                "('Camera 2', 'Nikon D850', 2, 1, 'maintenance', 'Media Room')," +
-                "('Microphone 2', 'Audio-Technica AT2020', 10, 9, 'available', 'Recording Studio')," +
-                "('Printer 2', 'Brother HL-L2395DW', 3, 2, 'available', 'Admin Office')," +
-                "('Scanner 2', 'Canon CanoScan LiDE400', 6, 5, 'available', 'Main Office');";
+        String insertEquipmentData = "INSERT INTO Equipment (name, description, total_quantity, available_quantity, status, location, staff_only) VALUES " +
+                "('Laptop 1', 'Dell XPS 15', 10, 8, 'available', 'IT Department', FALSE)," +
+                "('Projector 1', 'Epson 5040UB', 5, 3, 'available', 'Conference Room', FALSE)," +
+                "('Laptop 2', 'Apple MacBook Pro', 12, 10, 'available', 'IT Department', TRUE)," +
+                "('Camera 1', 'Canon EOS 5D', 3, 2, 'maintenance', 'Media Room', TRUE)," +
+                "('Microphone 1', 'Shure SM7B', 6, 6, 'available', 'Recording Studio', FALSE)," +
+                "('Laptop 3', 'HP Spectre x360', 8, 7, 'available', 'IT Department', FALSE)," +
+                "('Printer 1', 'HP LaserJet Pro', 4, 3, 'unavailable', 'Admin Office', TRUE)," +
+                "('Scanner 1', 'Fujitsu ScanSnap iX1500', 5, 5, 'available', 'Main Office', FALSE)," +
+                "('Laptop 4', 'Lenovo ThinkPad X1 Carbon', 7, 5, 'available', 'IT Department', FALSE)," +
+                "('Tablet 1', 'Apple iPad Pro', 15, 12, 'reserved', 'Design Studio', FALSE)," +
+                "('Projector 2', 'BenQ TK850', 4, 2, 'available', 'Conference Room', FALSE)," +
+                "('Camera 2', 'Nikon D850', 2, 1, 'maintenance', 'Media Room', TRUE)," +
+                "('Microphone 2', 'Audio-Technica AT2020', 10, 9, 'available', 'Recording Studio', FALSE)," +
+                "('Printer 2', 'Brother HL-L2395DW', 3, 2, 'available', 'Admin Office', FALSE)," +
+                "('Scanner 2', 'Canon CanoScan LiDE400', 6, 5, 'available', 'Main Office', FALSE);";
         stmt.execute(insertEquipmentData);
+
 
         // 插入Bookings表的預設資料
         String insertBookingsData = "INSERT INTO Bookings (user_id, equipment_id, quantity, start_time, end_time, status) VALUES " +

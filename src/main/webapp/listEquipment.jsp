@@ -68,8 +68,7 @@
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reserveModal<%= equipment.getEquipmentId() %>">Reserve</button>
                             </form>
                             <button data-equipment-id="<%= equipment.getEquipmentId() %>" onclick="toggleWishList(<%= userInfo.getUserId() %>, <%= equipment.getEquipmentId() %>, this)"
-                                class="btn <%= wishlist.contains(String.valueOf(equipment.getEquipmentId())) ? "btn-success" : "btn-primary" %>">
-                                <%= wishlist.contains(String.valueOf(equipment.getEquipmentId())) ? "❤️" : "♡" %>
+                                class="btn"> <%= wishlist.contains(String.valueOf(equipment.getEquipmentId())) ? "❤️" : "♡" %>
                             </button>
                         </td>
                     </tr>
@@ -129,64 +128,6 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script>
-            function searchEquipment() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchBar");
-                filter = input.value.toUpperCase();
-                table = document.getElementsByTagName("table")[0];
-                tr = table.getElementsByTagName("tr");
-
-                for (i = 1; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }       
-                }
-            }
-            function toggleWishList(userId, equipmentId, button) {
-                fetch('WishListServlet', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'user_id=' + userId + '&equipment_id=' + equipmentId
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.added) {
-                        button.innerHTML = '❤️'; 
-                    } else {
-                        button.innerHTML = '♡'; 
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
-            window.onload = function() {
-                fetch('WishListServlet', {
-                    method: 'GET'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const wishlist = new Set(data); // 将返回的 JSON 数组转换为 Set
-                    document.querySelectorAll('button[data-equipment-id]').forEach(button => {
-                        const equipmentId = parseInt(button.getAttribute('data-equipment-id'));
-                        if (wishlist.has(equipmentId)) {
-                            button.innerHTML = '❤️';
-                        } else {
-                            button.innerHTML = '♡';
-                        }
-                    });
-                })
-                .catch(error => console.error('Error loading wishlist:', error));
-            };
-        </script>
+        <script src="js/listEquipment.js"></script>
     </body>
 </html>
