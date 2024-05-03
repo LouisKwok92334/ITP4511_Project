@@ -3,6 +3,7 @@
     Created on : 2024年5月2日, 下午10:39:54
     Author     : boscochuen
 --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,7 @@
     <title>Update User</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/profile.css" rel="stylesheet">
+    <script src="js/validatePassword.js"></script>
 </head>
 <body>
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
@@ -20,29 +22,34 @@
             <input type="hidden" name="userId" value="${userInfo.userId}">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" class="form-control" id="username" >
+                <input type="text" name="username" class="form-control" id="username" value="${userInfo.username}" >
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" name="password" class="form-control" id="password" >
+                <input type="password" name="password" class="form-control" id="password" required>
+                <small id="passwordMessage" class="text-danger"></small>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" name="confirm_password" class="form-control" id="confirm_password" required>
             </div>
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input type="text" name="firstName" class="form-control" id="firstName" >
+                <input type="text" name="firstName" class="form-control" id="firstName" value="${userInfo.firstName}">
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input type="text" name="lastName" class="form-control" id="lastName" >
+                <input type="text" name="lastName" class="form-control" id="lastName" value="${userInfo.lastName}">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" class="form-control" id="email" >
+                <input type="email" name="email" class="form-control" id="email"value="${userInfo.email}" >
             </div>
             <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
-                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber">
+                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" value="${userInfo.phoneNumber}">
             </div>
-            <button type="submit" class="btn btn-primary">Update User</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">Update User</button>
         </form>
     </div>
 </body>
