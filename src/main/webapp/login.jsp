@@ -20,7 +20,7 @@
             <input type="hidden" name="action" value="authenticate"/>
             <div class="mb-3">
                 <label for="username" class="form-label">Login</label>
-                <input type="text" class="form-control" name="username" maxLength="10" id="username" value="admin1">
+                <input type="text" class="form-control" name="username" maxLength="10" id="username" value="user1">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
