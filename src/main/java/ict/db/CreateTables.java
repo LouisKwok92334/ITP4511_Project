@@ -42,6 +42,7 @@ public class CreateTables {
                         "available_quantity INT DEFAULT 1," +
                         "status ENUM('available', 'unavailable', 'maintenance', 'reserved') NOT NULL DEFAULT 'available'," +
                         "location VARCHAR(255) NOT NULL" +
+                        "staff_only BOOLEAN NOT NULL DEFAULT FALSE" +
                         ");";
                 stmt.execute(createEquipmentTable);
 
@@ -58,7 +59,6 @@ public class CreateTables {
                         "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
                         "FOREIGN KEY (user_id) REFERENCES Users(user_id)," +
                         "FOREIGN KEY (equipment_id) REFERENCES Equipment(equipment_id)" +
-                        "staff_only BOOLEAN NOT NULL DEFAULT FALSE" +
                         ");";
                 stmt.execute(createBookingsTable);
 
