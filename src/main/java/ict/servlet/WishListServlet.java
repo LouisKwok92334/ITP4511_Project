@@ -11,6 +11,7 @@ import java.io.IOException;
 import ict.db.WishListDB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashSet;
 
 /**
@@ -18,7 +19,7 @@ import java.util.HashSet;
  * @author puinamkwok
  */
 
-@WebServlet("/AddToWishListServlet")
+@WebServlet("/WishListServlet")
 public class WishListServlet extends HttpServlet {
     private WishListDB wishListDB;
 
@@ -39,20 +40,45 @@ public class WishListServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("user_id"));
+        HttpSession session = request.getSession(false); 
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
+            return;
+        }
+
+        int userId = (Integer) session.getAttribute("userId");
         int equipmentId = Integer.parseInt(request.getParameter("equipment_id"));
-        
-        boolean success = wishListDB.addToWishList(userId, equipmentId);
+
+        boolean added = wishListDB.toggleWishList(userId, equipmentId); // Toggle wishlist status
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"success\": " + success + "}");
+        response.getWriter().write("{\"added\": " + added + "}");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = Integer.parseInt(request.getParameter("user_id"));
-        HashSet<Integer> wishlist = wishListDB.getUserWishList(userId);
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
+            return;
+        }
 
-        request.setAttribute("wishlist", wishlist);
-        request.getRequestDispatcher("/wishlist.jsp").forward(request, response); // Assuming there's a JSP to display the list
+        int userId = (Integer) session.getAttribute("userId");
+        HashSet<Integer> wishlistIds = wishListDB.getUserWishList(userId);
+
+        // 构建 JSON 字符串
+        StringBuilder jsonBuilder = new StringBuilder();
+        jsonBuilder.append("[");
+        int i = 0;
+        for (Integer id : wishlistIds) {
+            if (i > 0) jsonBuilder.append(",");
+            jsonBuilder.append(id);
+            i++;
+        }
+        jsonBuilder.append("]");
+
+        // 设置响应类型和编码
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonBuilder.toString());
     }
 }
