@@ -1,3 +1,8 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
 package ict.servlet;
 
 import jakarta.servlet.ServletException;
@@ -5,14 +10,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import ict.bean.UserInfo;
+import ict.bean.UserProfile;
 import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/UserServlet")
 public class ProfileEditServlet extends HttpServlet {
-
     private UserDB db;
 
     @Override
@@ -37,21 +43,32 @@ public class ProfileEditServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        // Retrieve user details from the request
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        HttpSession session = request.getSession();
+        Integer sessionUserId = (Integer) session.getAttribute("userId"); // Assuming 'userId' is stored as an Integer
+
+        if (sessionUserId == null) {
+            response.sendRedirect("login.jsp"); // Redirect to login if session doesn't have userId
+            return;
+        }
+
+        // Retrieve and update user details
+        UserInfo currentUser = db.getUserById(sessionUserId); // Get current user details from the DB
+        request.setAttribute("currentUser", currentUser);
+        request.getRequestDispatcher("profile.jsp").forward(request, response);
+
+        // Code to update user details if needed
         String username = checkInput(request.getParameter("username"));
         String password = checkInput(request.getParameter("password"));
-        String role = checkInput(request.getParameter("role"));
         String firstName = checkInput(request.getParameter("firstName"));
         String lastName = checkInput(request.getParameter("lastName"));
         String email = checkInput(request.getParameter("email"));
         String phoneNumber = checkInput(request.getParameter("phoneNumber"));
 
-        UserInfo userInfo = new UserInfo(username, password, role, firstName, lastName, email, phoneNumber);
-        userInfo.setUserId(userId);
+        UserProfile UserProfile = new UserProfile( username,  password,  firstName,  lastName,  email,  phoneNumber);
+        UserProfile.setUserId(sessionUserId);
 
         try {
-            boolean isUpdated = db.updateUser(userInfo);
+            boolean isUpdated = db.updateUser(UserProfile);
             if (isUpdated) {
                 out.println("Record Updated Successfully");
                 System.out.println("Update successful for user: " + username);

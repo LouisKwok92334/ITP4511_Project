@@ -5,6 +5,7 @@
 package ict.db;
 
 import ict.bean.UserInfo;
+import ict.bean.UserProfile;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +27,36 @@ public class UserDB {
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
     }
-
+    
+  public UserInfo getUserById(int userId) {
+        UserInfo userInfo = null;
+        String sql = "SELECT * FROM Users WHERE user_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                userInfo = new UserInfo();
+                userInfo.setUserId(rs.getInt("user_id"));
+                userInfo.setUsername(rs.getString("username"));
+                userInfo.setPassword(rs.getString("password"));  // Consider security implications
+                userInfo.setRole(rs.getString("role"));
+                userInfo.setFirstName(rs.getString("first_name"));
+                userInfo.setLastName(rs.getString("last_name"));
+                userInfo.setEmail(rs.getString("email"));
+                userInfo.setPhoneNumber(rs.getString("phone_number"));
+                userInfo.setCreatedAt(rs.getTimestamp("created_at"));
+                userInfo.setUpdatedAt(rs.getTimestamp("updated_at"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userInfo;
+    }
+  
     public UserInfo getUserByUsernameAndPassword(String username, String password) {
         // 實現JDBC連接、執行SQL查詢並返回UserBean
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?")) {
@@ -66,28 +96,25 @@ public class UserDB {
         }
     }
 
-    public boolean updateUser(UserInfo userInfo) {
+    public boolean updateUser(UserProfile UserProfile) {
         StringBuilder sql = new StringBuilder("UPDATE Users SET updated_At = CURRENT_TIMESTAMP");
 
-        if (userInfo.getPassword() != null) {
+        if (UserProfile.getPassword() != null) {
             sql.append(", password = ?");
         }
-        if (userInfo.getRole() != null) {
-            sql.append(", role = ?");
-        }
-        if (userInfo.getFirstName() != null) {
+        if (UserProfile.getFirstName() != null) {
             sql.append(", first_Name = ?");
         }
-        if (userInfo.getLastName() != null) {
+        if (UserProfile.getLastName() != null) {
             sql.append(", last_Name = ?");
         }
-        if (userInfo.getEmail() != null) {
+        if (UserProfile.getEmail() != null) {
             sql.append(", email = ?");
         }
-        if (userInfo.getPhoneNumber() != null) {
+        if (UserProfile.getPhoneNumber() != null) {
             sql.append(", phone_number = ?");
         }
-        if (userInfo.getUsername() != null) {
+        if (UserProfile.getUsername() != null) {
             sql.append(", username = ?");
         }
         sql.append(" WHERE user_id = ?");
@@ -95,28 +122,26 @@ public class UserDB {
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
 
             int index = 1;
-            if (userInfo.getPassword() != null) {
-                pstmt.setString(index++, userInfo.getPassword());
+            if (UserProfile.getPassword() != null) {
+                pstmt.setString(index++, UserProfile.getPassword());
             }
-            if (userInfo.getRole() != null) {
-                pstmt.setString(index++, userInfo.getRole());
+
+            if (UserProfile.getFirstName() != null) {
+                pstmt.setString(index++, UserProfile.getFirstName());
             }
-            if (userInfo.getFirstName() != null) {
-                pstmt.setString(index++, userInfo.getFirstName());
+            if (UserProfile.getLastName() != null) {
+                pstmt.setString(index++, UserProfile.getLastName());
             }
-            if (userInfo.getLastName() != null) {
-                pstmt.setString(index++, userInfo.getLastName());
+            if (UserProfile.getEmail() != null) {
+                pstmt.setString(index++, UserProfile.getEmail());
             }
-            if (userInfo.getEmail() != null) {
-                pstmt.setString(index++, userInfo.getEmail());
+            if (UserProfile.getPhoneNumber() != null) {
+                pstmt.setString(index++, UserProfile.getPhoneNumber());
             }
-            if (userInfo.getPhoneNumber() != null) {
-                pstmt.setString(index++, userInfo.getPhoneNumber());
+            if (UserProfile.getUsername() != null) {
+                pstmt.setString(index++, UserProfile.getUsername());
             }
-            if (userInfo.getUsername() != null) {
-                pstmt.setString(index++, userInfo.getUsername());
-            }
-            pstmt.setInt(index, userInfo.getUserId());
+            pstmt.setInt(index, UserProfile.getUserId());
 
             int updated = pstmt.executeUpdate();
             return updated > 0;
