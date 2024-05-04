@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ict.bean.UserInfo;
-import ict.bean.UserProfile;
 import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
