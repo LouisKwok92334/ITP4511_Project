@@ -83,33 +83,55 @@ function submitEdit() {
         staffOnly: document.getElementById('editStaffOnly').checked
     };
 
-    // Make sure to check what is actually being sent in the console
-    console.log(JSON.stringify(equipment));
+    console.log('Submitting updated equipment:', JSON.stringify(equipment));
 
-  function handleError(error) {
-    console.error('Network or server error:', error);
-    alert('Error communicating with the server. Please try again later.');
+    fetch('InventoryServlet?action=update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(equipment)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            console.log('Update successful, updating table...');
+            updateTableEntry(equipment); // 更新表格中的数据显示
+            closeModal(); // 关闭模态框
+        } else {
+            console.error('Update failed:', data.message);
+            alert('Update failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Network or server error:', error);
+        alert('Error communicating with the server. Please try again later.');
+    });
 }
 
-// Usage in submitEdit
-fetch('InventoryServlet?action=update', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(equipment)
-})
-.then(response => response.json())
-.then(handleResponse)
-.catch(handleError);
-
+function updateTableEntry(updatedEquipment) {
+    // 找到并更新页面上的设备列表数据
+    let rows = document.querySelectorAll('#inventory table tr');
+    rows.forEach(row => {
+        if (row.cells[0].textContent == updatedEquipment.equipmentId.toString()) {
+            row.cells[1].textContent = updatedEquipment.name;
+            row.cells[2].textContent = updatedEquipment.description;
+            row.cells[3].textContent = updatedEquipment.totalQuantity.toString();
+            row.cells[4].textContent = updatedEquipment.availableQuantity.toString();
+            row.cells[5].textContent = updatedEquipment.status;
+            row.cells[6].textContent = updatedEquipment.location;
+            row.cells[7].textContent = updatedEquipment.staffOnly ? 'Yes' : 'No';
+        }
+    });
 }
+
+
 function handleResponse(response) {
     if (response.status === 'success') {
         console.log('Update successful!');
-        alert('Update successful!');
+        
     } else {
         console.error('Update failed:', response.message);
-        alert('Update failed:', response.message);
+
     }
 }
