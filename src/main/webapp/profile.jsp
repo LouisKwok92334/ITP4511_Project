@@ -18,7 +18,7 @@
                 $('form').on('submit', function (event) {
                     event.preventDefault();
 
-                    var formData = $(this).serialize(); 
+                    var formData = $(this).serialize();
                     $.ajax({
                         type: 'POST',
                         url: 'UserServlet',
@@ -41,6 +41,10 @@
             <h2>Update User Information</h2>
             <form action="UserServlet" method="POST" class="needs-validation" novalidate>
                 <input type="hidden" name="userId" value="${userInfo.userId}">
+                <div class="form-group">
+                    <label for="username">Role</label>
+                    <input type="text" name="username" class="form-control" id="role" value="${userInfo.role}" disabled >
+                </div>
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" name="username" class="form-control" id="username" value="${userInfo.username}" >

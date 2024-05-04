@@ -17,6 +17,11 @@ import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ *
+ * @author boscochuen
+ */
+
 @WebServlet("/UserServlet")
 public class ProfileEditServlet extends HttpServlet {
     private UserDB db;
@@ -63,12 +68,13 @@ public class ProfileEditServlet extends HttpServlet {
         String lastName = checkInput(request.getParameter("lastName"));
         String email = checkInput(request.getParameter("email"));
         String phoneNumber = checkInput(request.getParameter("phoneNumber"));
+        String role = checkInput(request.getParameter("role"));
 
-        UserProfile UserProfile = new UserProfile( username,  password,  firstName,  lastName,  email,  phoneNumber);
-        UserProfile.setUserId(sessionUserId);
+        UserInfo userInfo = new UserInfo( username,  password,  role,  firstName,  lastName,  email,  phoneNumber);
+        userInfo.setUserId(sessionUserId);
 
         try {
-            boolean isUpdated = db.updateUser(UserProfile);
+            boolean isUpdated = db.updateUser(userInfo);
             if (isUpdated) {
                 out.println("Record Updated Successfully");
                 System.out.println("Update successful for user: " + username);
