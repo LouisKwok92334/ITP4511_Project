@@ -34,7 +34,7 @@
                     <% } %>
                     <% if ("technician".equals(userInfo.getRole()) || "admin".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inventory Records</a>
+                            <a class="nav-link" href="inventory.jsp">Inventory Records</a>
                         </li>
                     <% } %>
                     <% if ("admin".equals(userInfo.getRole())) { %>

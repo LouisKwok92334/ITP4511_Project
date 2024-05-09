@@ -23,7 +23,6 @@ public class UserInfo implements Serializable {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    // 無參數的構造函數
     public UserInfo() {}
     
 public UserInfo(String username, String password, String role, String firstName, String lastName, String email, String phoneNumber) {
