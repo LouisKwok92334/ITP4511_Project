@@ -14,9 +14,9 @@ public class BookingBean {
     private int bookingId;
     private int userId;
     private int equipmentId;
-    private int quantity;
     private Timestamp startTime;
     private Timestamp endTime;
+    private String deliveryLocation;
     private String status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -47,14 +47,6 @@ public class BookingBean {
         this.equipmentId = equipmentId;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public Timestamp getStartTime() {
         return startTime;
     }
@@ -69,6 +61,14 @@ public class BookingBean {
 
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
+    }
+    
+    public String getDeliveryLocation() {
+        return deliveryLocation;
+    }
+
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryLocation = deliveryLocation;
     }
 
     public String getStatus() {

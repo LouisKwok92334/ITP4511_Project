@@ -22,8 +22,6 @@ public class EquipmentDB {
         equipment.setEquipmentId(rs.getInt("equipment_id"));
         equipment.setName(rs.getString("name"));
         equipment.setDescription(rs.getString("description"));
-        equipment.setTotalQuantity(rs.getInt("total_quantity"));
-        equipment.setAvailableQuantity(rs.getInt("available_quantity"));
         equipment.setStatus(rs.getString("status"));
         equipment.setLocation(rs.getString("location"));
         equipment.setStaffOnly(rs.getBoolean("staff_only"));
@@ -80,23 +78,21 @@ public class EquipmentDB {
         String sql;
         if (equipment.getEquipmentId() > 0) {
             // Update existing equipment
-            sql = "UPDATE Equipment SET name = ?, description = ?, total_quantity = ?, available_quantity = ?, status = ?, location = ?, staff_only = ? WHERE equipment_id = ?";
+            sql = "UPDATE Equipment SET name = ?, description = ?, status = ?, location = ?, staff_only = ? WHERE equipment_id = ?";
         } else {
             // Insert new equipment
-            sql = "INSERT INTO Equipment (name, description, total_quantity, available_quantity, status, location, staff_only) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Equipment (name, description, status, location, staff_only) VALUES (?, ?, ?, ?, ?, ?, ?)";
         }
 
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, equipment.getName());
             ps.setString(2, equipment.getDescription());
-            ps.setInt(3, equipment.getTotalQuantity());
-            ps.setInt(4, equipment.getAvailableQuantity());
-            ps.setString(5, equipment.getStatus());
-            ps.setString(6, equipment.getLocation());
-            ps.setBoolean(7, equipment.isStaffOnly());
+            ps.setString(3, equipment.getStatus());
+            ps.setString(4, equipment.getLocation());
+            ps.setBoolean(5, equipment.isStaffOnly());
 
             if (equipment.getEquipmentId() > 0) {
-                ps.setInt(8, equipment.getEquipmentId());
+                ps.setInt(6, equipment.getEquipmentId());
             }
 
             int affectedRows = ps.executeUpdate();

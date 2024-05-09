@@ -35,9 +35,9 @@ public class BookingDB {
                 booking.setBookingId(resultSet.getInt("booking_id"));
                 booking.setUserId(resultSet.getInt("user_id"));
                 booking.setEquipmentId(resultSet.getInt("equipment_id"));
-                booking.setQuantity(resultSet.getInt("quantity"));
                 booking.setStartTime(resultSet.getTimestamp("start_time"));
                 booking.setEndTime(resultSet.getTimestamp("end_time"));
+                booking.setDeliveryLocation(resultSet.getString("delivery_location"));
                 booking.setStatus(resultSet.getString("status"));
                 bookings.add(booking);
             }

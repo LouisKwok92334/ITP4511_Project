@@ -12,8 +12,6 @@ public class EquipmentBean {
     private int equipmentId;
     private String name;
     private String description;
-    private int totalQuantity;
-    private int availableQuantity;
     private String status;
     private String location;
     private boolean staffOnly;
@@ -43,22 +41,6 @@ public class EquipmentBean {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
-    public int getAvailableQuantity() {
-        return availableQuantity;
-    }
-
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
     }
 
     public String getStatus() {

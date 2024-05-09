@@ -41,7 +41,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Available Quantity</th>
                         <th>Location</th>
                         <th>Staff Only</th>
                         <th>Actions</th>
@@ -71,7 +70,6 @@
                     <tr>
                         <td><%= equipment.getName() %></td>
                         <td><%= equipment.getDescription() %></td>
-                        <td><%= equipment.getAvailableQuantity() %></td>
                         <td><%= equipment.getLocation() %></td>
                         <td>
                             <% if (staffOnly) { %>
@@ -117,10 +115,6 @@
                         <form>
                             <input type="hidden" name="user_id" value="<%= userInfo.getUserId() %>">
                             <input type="hidden" name="equipment_id" value="<%= equipment.getEquipmentId() %>">
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="number" class="form-control" name="quantity" max="<%= equipment.getAvailableQuantity() %>" min="1" value="1">
-                            </div>
                             <div class="form-group">
                                 <label>Start Time</label>
                                 <input type="datetime-local" class="form-control" name="start_time" value="<%= currentTime %>">

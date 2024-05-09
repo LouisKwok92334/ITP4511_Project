@@ -27,14 +27,12 @@ function loadInventory() {
 
 function updateTable(equipments) {
     console.log('Updating table with data:', equipments);
-    let output = '<table border="1"><tr><th>ID</th><th>Name</th><th>Description</th><th>Total Quantity</th><th>Available Quantity</th><th>Status</th><th>Location</th><th>Staff Only</th><th>Actions</th></tr>';
+    let output = '<table border="1"><tr><th>ID</th><th>Name</th><th>Description</th><th>Status</th><th>Location</th><th>Staff Only</th><th>Actions</th></tr>';
     equipments.forEach(equipment => {
         output += '<tr>' +
                 '<td>' + equipment.equipmentId + '</td>' +
                 '<td>' + equipment.name + '</td>' +
                 '<td>' + equipment.description + '</td>' +
-                '<td>' + equipment.totalQuantity + '</td>' +
-                '<td>' + equipment.availableQuantity + '</td>' +
                 '<td>' + equipment.status + '</td>' +
                 '<td>' + equipment.location + '</td>' +
                 '<td>' + (equipment.staffOnly ? 'Yes' : 'No') + '</td>' +
@@ -58,8 +56,6 @@ function editEquipment(equipmentId) {
         document.getElementById('editId').value = equipment.equipmentId;
         document.getElementById('editName').value = equipment.name;
         document.getElementById('editDescription').value = equipment.description;
-        document.getElementById('editTotalQuantity').value = equipment.totalQuantity;
-        document.getElementById('editAvailableQuantity').value = equipment.availableQuantity;
         document.getElementById('editStatus').value = equipment.status;
         document.getElementById('editLocation').value = equipment.location;
         document.getElementById('editStaffOnly').checked = equipment.staffOnly;
@@ -76,8 +72,6 @@ function submitEdit() {
         equipmentId: parseInt(document.getElementById('editId').value),
         name: document.getElementById('editName').value,
         description: document.getElementById('editDescription').value,
-        totalQuantity: parseInt(document.getElementById('editTotalQuantity').value),
-        availableQuantity: parseInt(document.getElementById('editAvailableQuantity').value),
         status: document.getElementById('editStatus').value,
         location: document.getElementById('editLocation').value,
         staffOnly: document.getElementById('editStaffOnly').checked
@@ -116,11 +110,9 @@ function updateTableEntry(updatedEquipment) {
         if (row.cells[0].textContent == updatedEquipment.equipmentId.toString()) {
             row.cells[1].textContent = updatedEquipment.name;
             row.cells[2].textContent = updatedEquipment.description;
-            row.cells[3].textContent = updatedEquipment.totalQuantity.toString();
-            row.cells[4].textContent = updatedEquipment.availableQuantity.toString();
-            row.cells[5].textContent = updatedEquipment.status;
-            row.cells[6].textContent = updatedEquipment.location;
-            row.cells[7].textContent = updatedEquipment.staffOnly ? 'Yes' : 'No';
+            row.cells[3].textContent = updatedEquipment.status;
+            row.cells[4].textContent = updatedEquipment.location;
+            row.cells[5].textContent = updatedEquipment.staffOnly ? 'Yes' : 'No';
         }
     });
 }

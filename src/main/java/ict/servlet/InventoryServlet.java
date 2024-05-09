@@ -58,8 +58,6 @@ public class InventoryServlet extends HttpServlet {
                     .add("equipmentId", equipment.getEquipmentId())
                     .add("name", equipment.getName())
                     .add("description", equipment.getDescription())
-                    .add("totalQuantity", equipment.getTotalQuantity())
-                    .add("availableQuantity", equipment.getAvailableQuantity())
                     .add("status", equipment.getStatus())
                     .add("location", equipment.getLocation())
                     .add("staffOnly", equipment.isStaffOnly())
@@ -95,8 +93,6 @@ public class InventoryServlet extends HttpServlet {
             int equipmentId = json.getInt("equipmentId"); 
             String name = json.getString("name"); 
             String description = json.getString("description");
-            int totalQuantity = json.getInt("totalQuantity"); 
-            int availableQuantity = json.getInt("availableQuantity");
             String status = json.getString("status");
             String location = json.getString("location");
             boolean staffOnly = json.getBoolean("staffOnly");
@@ -105,8 +101,6 @@ public class InventoryServlet extends HttpServlet {
             equipment.setEquipmentId(equipmentId);
             equipment.setName(name);
             equipment.setDescription(description);
-            equipment.setTotalQuantity(totalQuantity);
-            equipment.setAvailableQuantity(availableQuantity);
             equipment.setStatus(status);
             equipment.setLocation(location);
             equipment.setStaffOnly(staffOnly);

@@ -29,8 +29,6 @@
                     <input type="hidden" id="editId">
                     Name: <input type="text" id="editName"  disabled><br>
                     Description: <input type="text" id="editDescription"  disabled><br>
-                    Total Quantity: <input type="number" id="editTotalQuantity"  disabled><br>
-                    Available Quantity: <input type="number" id="editAvailableQuantity"  disabled><br>
                     Status:<br>
                     <select id="editStatus">
                         <option value="available">Available</option>

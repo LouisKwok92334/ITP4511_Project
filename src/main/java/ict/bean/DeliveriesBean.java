@@ -15,7 +15,6 @@ public class DeliveriesBean {
     private int bookingId;
     private int courierId;
     private String pickupLocation;
-    private String deliveryLocation;
     private String status;
     private Timestamp scheduledTime;
     private Timestamp deliveredTime;
@@ -54,14 +53,6 @@ public class DeliveriesBean {
 
     public void setPickupLocation(String pickupLocation) {
         this.pickupLocation = pickupLocation;
-    }
-
-    public String getDeliveryLocation() {
-        return deliveryLocation;
-    }
-
-    public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
     }
 
     public String getStatus() {

@@ -30,7 +30,6 @@
                 <tr>
                     <th>Booking ID</th>
                     <th>Equipment ID</th>
-                    <th>Quantity</th>
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Status</th>
@@ -41,7 +40,6 @@
                 <tr>
                     <td><%= booking.getBookingId() %></td>
                     <td><%= booking.getEquipmentId() %></td>
-                    <td><%= booking.getQuantity() %></td>
                     <td><%= booking.getStartTime() %></td>
                     <td><%= booking.getEndTime() %></td>
                     <td><%= booking.getStatus() %></td>
