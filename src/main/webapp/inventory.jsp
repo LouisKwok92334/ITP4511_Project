@@ -18,7 +18,6 @@
         <div class="header">
             <h1>Inventory Data</h1>
             <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
-            <br>
             <div id="inventory"></div>
         </div>
 
