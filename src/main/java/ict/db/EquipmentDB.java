@@ -28,20 +28,6 @@ public class EquipmentDB {
         return equipment;
     }
 
-    public ArrayList<EquipmentBean> getAllAvailableEquipment() {
-        ArrayList<EquipmentBean> equipments = new ArrayList<>();
-        String sql = "SELECT * FROM Equipment WHERE status = 'available'";
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                equipments.add(extractEquipment(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return equipments;
-    }
-
     public ArrayList<EquipmentBean> getAllEquipment() {
         ArrayList<EquipmentBean> equipments = new ArrayList<>();
         HashSet<Integer> equipmentIds = new HashSet<>();

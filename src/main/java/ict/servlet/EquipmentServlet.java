@@ -43,7 +43,7 @@ public class EquipmentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("listAvailable".equals(action)) {
-            List<EquipmentBean> equipmentList = equipmentDB.getAllAvailableEquipment();
+            List<EquipmentBean> equipmentList = equipmentDB.getAllEquipment();
             request.setAttribute("equipmentList", equipmentList);
             RequestDispatcher dispatcher = request.getRequestDispatcher("listEquipment.jsp");
             dispatcher.forward(request, response);
