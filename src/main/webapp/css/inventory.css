@@ -6,6 +6,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : 2024年5月4日, 上午3:18:20
     Author     : boscochuen
 */
+
+button {
+    background-color: #007BFF; 
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;

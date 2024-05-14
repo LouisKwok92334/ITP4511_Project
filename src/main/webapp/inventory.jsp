@@ -17,6 +17,8 @@
     <body>
         <div class="header">
             <h1>Inventory Data</h1>
+            <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
+            <br>
             <div id="inventory"></div>
         </div>
 
@@ -25,6 +27,7 @@
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
                 <span onclick="closeModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
                 <p>Edit Equipment</p>
+             
                 <form id="editEquipmentForm">
                     <input type="hidden" id="editId">
                     Name: <input type="text" id="editName"  disabled><br>
