@@ -35,7 +35,7 @@
                     <div class="modal-body">
                         <label for="editStatus">New Status:</label>
                         <select id="editStatus" class="form-control">
-                            <option value="reported">Reported</option>
+<!--                        <option value="reported">Reported</option>-->
                             <option value="reviewed">Reviewed</option>
                             <option value="resolved">Resolved</option>
                         </select>
