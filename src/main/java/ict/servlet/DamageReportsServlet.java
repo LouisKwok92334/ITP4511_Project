@@ -73,6 +73,19 @@ public class DamageReportsServlet extends HttpServlet {
             }
         }
     }
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    int reportId = Integer.parseInt(request.getParameter("reportId"));
+    String status = request.getParameter("status");
+    try {
+        damageReportDB.updateDamageReportStatus(reportId, status);
+        response.getWriter().write("Success");
+    } catch (SQLException e) {
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.getWriter().write("Error updating report: " + e.getMessage());
+    }
+}
+
 
     private String escapeJson(String data) {
         if (data == null) {

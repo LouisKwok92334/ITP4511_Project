@@ -84,4 +84,14 @@ public class DamageReportDB {
             return result > 0;
         }
     }
+
+    public boolean updateDamageReportStatus(int reportId, String status) throws SQLException {
+        String sql = "UPDATE DamageReports SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE report_id = ?";
+        try (Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, reportId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
 }
