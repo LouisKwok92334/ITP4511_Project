@@ -22,6 +22,18 @@ public class DamageReportsBean {
     
     public DamageReportsBean() {}
 
+    // Constructor with all fields
+    public DamageReportsBean(int reportId, int equipmentId, int reportedBy, String description, Timestamp reportDate, String status, Timestamp createdAt, Timestamp updatedAt) {
+        this.reportId = reportId;
+        this.equipmentId = equipmentId;
+        this.reportedBy = reportedBy;
+        this.description = description;
+        this.reportDate = reportDate;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public int getReportId() {
         return reportId;
     }
