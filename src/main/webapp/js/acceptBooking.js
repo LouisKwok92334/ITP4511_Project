@@ -22,7 +22,9 @@ $(document).ready(function() {
                         '<td>' + booking.endTime + '</td>' +
                         '<td>' + booking.deliveryLocation + '</td>' +
                         '<td>' + booking.status + '</td>' +
-                        '<td><button class="editBtn" data-id="' + booking.bookingId + '">Edit</button></td>' +
+                        '<td>' +
+                        '<button class="editBtn" data-id="' + booking.bookingId + '">Edit</button>' +
+                        '</td>' +
                         '</tr>';
                 });
                 $('#bookingTable').html(tableContent);
@@ -42,14 +44,22 @@ $(document).ready(function() {
         });
     }
 
-    $('#updateStatusBtn').on('click', function() {
+    $('#approveBtn').on('click', function() {
+        updateBookingStatus('approved');
+    });
+
+    $('#denyBtn').on('click', function() {
+        updateBookingStatus('denied');
+    });
+
+    function updateBookingStatus(status) {
         let bookingId = $('#bookingId').val();
         $.ajax({
             url: 'AcceptBookingServlet',
             type: 'POST',
             data: {
                 bookingId: bookingId,
-                status: 'approved'
+                status: status
             },
             success: function() {
                 alert('Status updated successfully');
@@ -60,7 +70,7 @@ $(document).ready(function() {
                 alert('Failed to update status');
             }
         });
-    });
+    }
 
     $('#closeModalBtn').on('click', function() {
         $('#editModal').hide();
