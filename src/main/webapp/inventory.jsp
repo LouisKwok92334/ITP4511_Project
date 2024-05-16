@@ -3,9 +3,11 @@
     Created on : 2024年5月4日, 上午12:19:06
     Author     : boscochuen
 --%>
+
 <%@ page import="java.util.List" %>
 <%@ page import="ict.bean.EquipmentBean" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+ <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -18,10 +20,11 @@
         <div class="header">
             <h1>Inventory Data</h1>
             <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
+            <button onclick="openReportModal()">Report Damages</button>
             <div id="inventory"></div>
         </div>
 
-        <!-- The Modal -->
+        <!-- The Edit Modal -->
         <div id="editModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
                 <span onclick="closeModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
@@ -29,8 +32,8 @@
              
                 <form id="editEquipmentForm">
                     <input type="hidden" id="editId">
-                    Name: <input type="text" id="editName"  disabled><br>
-                    Description: <input type="text" id="editDescription"  disabled><br>
+                    Name: <input type="text" id="editName" disabled><br>
+                    Description: <input type="text" id="editDescription" disabled><br>
                     Status:<br>
                     <select id="editStatus">
                         <option value="available">Available</option>
@@ -38,12 +41,37 @@
                         <option value="maintenance">Maintenance</option>
                         <option value="reserved">Reserved</option>
                     </select><br>
-                    Location: <input type="text" id="editLocation"  disabled><br>
-                    Staff Only: <input type="checkbox" id="editStaffOnly" disabled ><br>
+                    Location: <input type="text" id="editLocation" disabled><br>
+                    Staff Only: <input type="checkbox" id="editStaffOnly" disabled><br>
 
                     <button type="button" onclick="submitEdit()">Save Changes</button>
                 </form>
             </div>
         </div>
+
+        <!-- The Report Damage Modal -->
+        <div id="reportModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
+            <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
+                <span onclick="closeReportModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <p>Report Damage</p>
+             
+                <form id="reportDamageForm" method="post" action="ReportDamageServlet">
+                    Equipment ID: <input type="text" name="equipmentId" required><br>
+                    Reported By (User ID): <input type="text" name="reportedBy" value="${userInfo.userId}" required><br>
+                    Description: <textarea name="description" required></textarea><br>
+                    <button type="submit">Submit Report</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openReportModal() {
+                document.getElementById("reportModal").style.display = "block";
+            }
+
+            function closeReportModal() {
+                document.getElementById("reportModal").style.display = "none";
+            }
+        </script>
     </body>
 </html>
