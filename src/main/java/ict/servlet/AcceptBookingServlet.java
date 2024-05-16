@@ -70,17 +70,20 @@ public class AcceptBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-        String status = request.getParameter("status");
+        int deliveryId = Integer.parseInt(request.getParameter("deliveryId"));
+        String bookingStatus = request.getParameter("bookingStatus");
+        String deliveryStatus = request.getParameter("deliveryStatus");
 
         try {
-            bookingDB.updateBookingStatus(bookingId, status);
+            bookingDB.updateBookingStatus(bookingId, bookingStatus);
+            deliveryDB.updateDeliveryStatus(deliveryId, deliveryStatus);
             // Create a delivery record when booking is approved
-            if ("approved".equalsIgnoreCase(status)) {
+            if ("approved".equalsIgnoreCase(bookingStatus)) {
                 deliveryDB.createDelivery(bookingId);
             }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
-            throw new ServletException("Error updating booking status", e);
+            throw new ServletException("Error updating statuses", e);
         }
     }
 }

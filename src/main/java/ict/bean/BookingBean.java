@@ -17,12 +17,21 @@ public class BookingBean {
     private Timestamp startTime;
     private Timestamp endTime;
     private String deliveryLocation;
+    private String equipmentName;
     private String status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     
     public BookingBean() {}
+    
+    public String getEquipmentName() {
+        return equipmentName;
+    }
 
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
+    }
+    
     public int getBookingId() {
         return bookingId;
     }

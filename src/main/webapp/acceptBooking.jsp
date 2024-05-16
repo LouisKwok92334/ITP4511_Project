@@ -3,7 +3,6 @@
     Created on : 2024年5月16日, 下午4:43:48
     Author     : boscochuen
 --%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -25,11 +24,23 @@
     <div id="editModal">
         <div id="modalContent">
             <span id="closeModalBtn">&times;</span>
-            <h2>Edit Booking Status</h2>
+            <h2>Edit Booking and Delivery Status</h2>
             <input type="hidden" id="bookingId">
-            <p>Change status to:</p>
-            <button id="approveBtn" class="button">Approve</button>
-            <button id="denyBtn" class="button">Deny</button>
+            <input type="hidden" id="deliveryId">
+            <p>Booking Status:</p>
+            <select id="bookingStatus">
+                <option value="approved">Approve</option>
+                <option value="denied">Deny</option>
+            </select>
+            <p>Courier ID: <span id="courierId"></span></p>
+            <p>Pickup Location: <span id="pickupLocation"></span></p>
+            <p>Delivery Status:</p>
+            <select id="deliveryStatus">
+                <option value="scheduled">Scheduled</option>
+                <option value="in_transit">In Transit</option>
+                <option value="delivered">Delivered</option>
+            </select>
+            <button id="updateStatusBtn" class="button">Update</button>
         </div>
     </div>
 </body>

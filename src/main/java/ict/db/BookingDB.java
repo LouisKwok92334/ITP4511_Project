@@ -1,18 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ict.db;
 
 import ict.bean.BookingBean;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
- *
- * @author user
+ * BookingDB handles database operations related to bookings.
  */
 public class BookingDB {
+
     private String dburl;
     private String dbUser;
     private String dbPassword;
@@ -22,10 +19,20 @@ public class BookingDB {
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
     }
-    
+
+    /**
+     * Retrieves all bookings made by a specific user.
+     * 
+     * @param userId the ID of the user
+     * @return a list of BookingBean objects
+     * @throws SQLException if a database access error occurs
+     */
     public List<BookingBean> getBookingsByUserId(int userId) throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM Bookings WHERE user_id = ?";
+        String sql = "SELECT b.booking_id, b.user_id, b.equipment_id, e.name AS equipment_name, b.start_time, b.end_time, b.delivery_location, b.status "
+                   + "FROM Bookings b "
+                   + "JOIN Equipment e ON b.equipment_id = e.equipment_id "
+                   + "WHERE b.user_id = ?";
         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
@@ -35,6 +42,7 @@ public class BookingDB {
                 booking.setBookingId(resultSet.getInt("booking_id"));
                 booking.setUserId(resultSet.getInt("user_id"));
                 booking.setEquipmentId(resultSet.getInt("equipment_id"));
+                booking.setEquipmentName(resultSet.getString("equipment_name"));
                 booking.setStartTime(resultSet.getTimestamp("start_time"));
                 booking.setEndTime(resultSet.getTimestamp("end_time"));
                 booking.setDeliveryLocation(resultSet.getString("delivery_location"));
@@ -44,7 +52,13 @@ public class BookingDB {
         }
         return bookings;
     }
-    
+
+    /**
+     * Saves a new booking to the database.
+     * 
+     * @param booking the BookingBean object to be saved
+     * @throws SQLException if a database access error occurs
+     */
     public void saveBooking(BookingBean booking) throws SQLException {
         String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
@@ -57,9 +71,18 @@ public class BookingDB {
             statement.executeUpdate();
         }
     }
+
+    /**
+     * Retrieves all bookings from the database.
+     * 
+     * @return a list of BookingBean objects
+     * @throws SQLException if a database access error occurs
+     */
     public List<BookingBean> getAllBookings() throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM Bookings";
+        String sql = "SELECT b.booking_id, b.user_id, e.name AS equipment_name, b.start_time, b.end_time, b.delivery_location, b.status "
+                   + "FROM Bookings b "
+                   + "JOIN Equipment e ON b.equipment_id = e.equipment_id";
         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
@@ -67,7 +90,7 @@ public class BookingDB {
                 BookingBean booking = new BookingBean();
                 booking.setBookingId(resultSet.getInt("booking_id"));
                 booking.setUserId(resultSet.getInt("user_id"));
-                booking.setEquipmentId(resultSet.getInt("equipment_id"));
+                booking.setEquipmentName(resultSet.getString("equipment_name"));
                 booking.setStartTime(resultSet.getTimestamp("start_time"));
                 booking.setEndTime(resultSet.getTimestamp("end_time"));
                 booking.setDeliveryLocation(resultSet.getString("delivery_location"));
@@ -77,15 +100,21 @@ public class BookingDB {
         }
         return bookings;
     }
-    
-    public void updateBookingStatus(int bookingId, String status) throws SQLException {
-    String sql = "UPDATE Bookings SET status = ? WHERE booking_id = ?";
-    try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
-         PreparedStatement statement = connection.prepareStatement(sql)) {
-        statement.setString(1, status);
-        statement.setInt(2, bookingId);
-        statement.executeUpdate();
-    }
-}
 
+    /**
+     * Updates the status of a booking in the database.
+     * 
+     * @param bookingId the ID of the booking to be updated
+     * @param status the new status of the booking
+     * @throws SQLException if a database access error occurs
+     */
+    public void updateBookingStatus(int bookingId, String status) throws SQLException {
+        String sql = "UPDATE Bookings SET status = ? WHERE booking_id = ?";
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, status);
+            statement.setInt(2, bookingId);
+            statement.executeUpdate();
+        }
+    }
 }
