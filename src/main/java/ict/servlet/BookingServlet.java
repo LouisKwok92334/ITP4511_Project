@@ -14,7 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date; 
 import java.util.*;
 
 /**
@@ -54,7 +57,7 @@ public class BookingServlet extends HttpServlet {
                 break;
         }
     }
-
+    
     private void showBookings(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
@@ -70,5 +73,56 @@ public class BookingServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new ServletException("Unable to retrieve bookings", e);
         }
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "create":
+                createBooking(request, response);
+                break;
+            case "update":
+                updateBooking(request, response);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+                break;
+        }
+    }
+    
+    private void createBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int userId = Integer.parseInt(request.getParameter("user_id"));
+        int equipmentId = Integer.parseInt(request.getParameter("equipment_id"));
+        String startTimeStr = request.getParameter("start_time");
+        String endTimeStr = request.getParameter("end_time");
+        String deliveryLocation = request.getParameter("delivery_location");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        try {
+            Date parsedStartDate = dateFormat.parse(startTimeStr);
+            Timestamp startTime = new Timestamp(parsedStartDate.getTime());
+            Date parsedEndDate = dateFormat.parse(endTimeStr);
+            Timestamp endTime = new Timestamp(parsedEndDate.getTime());
+
+            BookingBean booking = new BookingBean();
+            booking.setUserId(userId);
+            booking.setEquipmentId(equipmentId);
+            booking.setStartTime(startTime);
+            booking.setEndTime(endTime);
+            booking.setDeliveryLocation(deliveryLocation);
+
+            bookingDB.saveBooking(booking);
+            response.sendRedirect("equipment?action=listAvailable"); 
+        } catch (ParseException e) {
+            throw new ServletException("Unable to parse date format", e);
+        } catch (SQLException e) {
+            throw new ServletException("Unable to save booking", e);
+        }
+    }
+    
+    private void updateBooking(HttpServletRequest request, HttpServletResponse response) {
+        // 更新預訂的實現
     }
 }

@@ -65,6 +65,7 @@
                         if (equipmentList != null) {
                             for (EquipmentBean equipment : equipmentList) {
                                 boolean staffOnly = equipment.isStaffOnly();
+                                String status = equipment.getStatus();
                                 if (("staff".equals(userRole) || "technician".equals(userRole) || "admin".equals(userRole)) || !staffOnly) {
                     %>
                     <tr>
@@ -79,10 +80,13 @@
                             <% } %>
                         </td>
                         <td>
-                            <form action="" method="POST" style="display: inline;">
-                                <!-- Reserve Button -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reserveModal<%= equipment.getEquipmentId() %>">Reserve</button>
-                            </form>
+                            <% if ("available".equals(status)) { %>
+                                <form action="" method="POST" style="display: inline;">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reserveModal<%= equipment.getEquipmentId() %>">Reserve</button>
+                                </form>
+                            <% } else { %>
+                                <button type="button" class="btn btn-secondary" disabled>Reserve</button>
+                            <% } %>
                             <button data-equipment-id="<%= equipment.getEquipmentId() %>" onclick="toggleWishList(<%= userInfo.getUserId() %>, <%= equipment.getEquipmentId() %>, this)"
                                 class="btn"> <%= wishlist.contains(String.valueOf(equipment.getEquipmentId())) ? "❤️" : "♡" %>
                             </button>
@@ -112,7 +116,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="post" action="booking">
+                            <input type="hidden" name="action" value="create">
                             <input type="hidden" name="user_id" value="<%= userInfo.getUserId() %>">
                             <input type="hidden" name="equipment_id" value="<%= equipment.getEquipmentId() %>">
                             <div class="form-group">
@@ -123,11 +128,18 @@
                                 <label>End Time</label>
                                 <input type="datetime-local" class="form-control" name="end_time" value="<%= oneMonthLater %>">
                             </div>
+                            <div class="form-group">
+                                <label>Delivery Location</label>
+                                <select class="form-control" name="delivery_location">
+                                    <option value="LWL">LWL</option>
+                                    <option value="ST">ST</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Reservation</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save Reservation</button>
                     </div>
                 </div>
             </div>

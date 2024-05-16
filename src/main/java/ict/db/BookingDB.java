@@ -45,6 +45,18 @@ public class BookingDB {
         return bookings;
     }
     
+    public void saveBooking(BookingBean booking) throws SQLException {
+        String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, booking.getUserId());
+            statement.setInt(2, booking.getEquipmentId());
+            statement.setTimestamp(3, booking.getStartTime());
+            statement.setTimestamp(4, booking.getEndTime());
+            statement.setString(5, booking.getDeliveryLocation());
+            statement.executeUpdate();
+        }
+    }
     public List<BookingBean> getAllBookings() throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
         String sql = "SELECT * FROM Bookings";

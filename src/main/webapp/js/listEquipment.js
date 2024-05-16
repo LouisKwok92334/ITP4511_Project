@@ -48,7 +48,7 @@ window.onload = function() {
     })
     .then(response => response.json())
     .then(data => {
-        const wishlist = new Set(data); // 将返回的 JSON 数组转换为 Set
+        const wishlist = new Set(data);
         document.querySelectorAll('button[data-equipment-id]').forEach(button => {
             const equipmentId = parseInt(button.getAttribute('data-equipment-id'));
             if (wishlist.has(equipmentId)) {
