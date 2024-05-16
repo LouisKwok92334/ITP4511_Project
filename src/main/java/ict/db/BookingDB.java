@@ -44,4 +44,36 @@ public class BookingDB {
         }
         return bookings;
     }
+    
+    public List<BookingBean> getAllBookings() throws SQLException {
+        List<BookingBean> bookings = new ArrayList<>();
+        String sql = "SELECT * FROM Bookings";
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                BookingBean booking = new BookingBean();
+                booking.setBookingId(resultSet.getInt("booking_id"));
+                booking.setUserId(resultSet.getInt("user_id"));
+                booking.setEquipmentId(resultSet.getInt("equipment_id"));
+                booking.setStartTime(resultSet.getTimestamp("start_time"));
+                booking.setEndTime(resultSet.getTimestamp("end_time"));
+                booking.setDeliveryLocation(resultSet.getString("delivery_location"));
+                booking.setStatus(resultSet.getString("status"));
+                bookings.add(booking);
+            }
+        }
+        return bookings;
+    }
+    
+    public void updateBookingStatus(int bookingId, String status) throws SQLException {
+    String sql = "UPDATE Bookings SET status = ? WHERE booking_id = ?";
+    try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+         PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setString(1, status);
+        statement.setInt(2, bookingId);
+        statement.executeUpdate();
+    }
+}
+
 }
