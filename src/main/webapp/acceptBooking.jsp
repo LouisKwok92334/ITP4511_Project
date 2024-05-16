@@ -9,7 +9,7 @@
 <head>
     <jsp:include page="header.jsp"/>
     <meta charset="UTF-8">
-    <title> Accept Booking</title>
+    <title>Accept Booking</title>
     <link rel="stylesheet" type="text/css" href="css/acceptBooking.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/acceptBooking.js"></script>
@@ -24,9 +24,22 @@
     <div id="editModal">
         <div id="modalContent">
             <span id="closeModalBtn">&times;</span>
-            <h2>Edit Booking Status</h2>
+            <h2>Edit Booking and Delivery Status</h2>
             <input type="hidden" id="bookingId">
-            <p>Change status to "approved"?</p>
+            <input type="hidden" id="deliveryId">
+            <p>Booking Status:</p>
+            <select id="bookingStatus">
+                <option value="approved">Approve</option>
+                <option value="denied">Deny</option>
+            </select>
+            <p>Courier ID: <span id="courierId"></span></p>
+            <p>Pickup Location: <span id="pickupLocation"></span></p>
+            <p>Delivery Status:</p>
+            <select id="deliveryStatus">
+                <option value="scheduled">Scheduled</option>
+                <option value="in_transit">In Transit</option>
+                <option value="delivered">Delivered</option>
+            </select>
             <button id="updateStatusBtn" class="button">Update</button>
         </div>
     </div>

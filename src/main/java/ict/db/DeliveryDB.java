@@ -4,6 +4,7 @@
  */
 package ict.db;
 
+import ict.bean.DeliveryBean;
 import java.sql.*;
 
 public class DeliveryDB {
@@ -15,6 +16,29 @@ public class DeliveryDB {
         this.dburl = dburl;
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
+    }
+
+    public DeliveryBean getDeliveryByBookingId(int bookingId) throws SQLException {
+        String sql = "SELECT * FROM Deliveries WHERE booking_id = ?";
+        DeliveryBean delivery = null;
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, bookingId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                delivery = new DeliveryBean();
+                delivery.setDeliveryId(resultSet.getInt("delivery_id"));
+                delivery.setBookingId(resultSet.getInt("booking_id"));
+                delivery.setCourierId(resultSet.getInt("courier_id"));
+                delivery.setPickupLocation(resultSet.getString("pickup_location"));
+                delivery.setStatus(resultSet.getString("status"));
+                delivery.setScheduledTime(resultSet.getTimestamp("scheduled_time"));
+                delivery.setDeliveredTime(resultSet.getTimestamp("delivered_time"));
+                delivery.setCreatedAt(resultSet.getTimestamp("created_at"));
+                delivery.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+            }
+        }
+        return delivery;
     }
 
     public void createDelivery(int bookingId) throws SQLException {
@@ -40,6 +64,15 @@ public class DeliveryDB {
                 insertDeliveryStmt.setString(3, pickupLocation);
                 insertDeliveryStmt.executeUpdate();
             }
+        }
+    }
+      public void updateDeliveryStatus(int deliveryId, String status) throws SQLException {
+        String sql = "UPDATE Deliveries SET status = ? WHERE delivery_id = ?";
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, status);
+            statement.setInt(2, deliveryId);
+            statement.executeUpdate();
         }
     }
 }

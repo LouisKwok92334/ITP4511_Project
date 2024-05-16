@@ -1,8 +1,3 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
- */
-
 $(document).ready(function() {
     fetchBookings();
 
@@ -12,12 +7,12 @@ $(document).ready(function() {
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                let tableContent = '<tr><th>Booking ID</th><th>User ID</th><th>Equipment ID</th><th>Start Time</th><th>End Time</th><th>Delivery Location</th><th>Status</th><th>Actions</th></tr>';
+                let tableContent = '<tr><th>Booking ID</th><th>User ID</th><th>Equipment Name</th><th>Start Time</th><th>End Time</th><th>Delivery Location</th><th>Status</th><th>Actions</th></tr>';
                 $.each(data, function(index, booking) {
                     tableContent += '<tr>' +
                         '<td>' + booking.bookingId + '</td>' +
                         '<td>' + booking.userId + '</td>' +
-                        '<td>' + booking.equipmentId + '</td>' +
+                        '<td>' + booking.equipmentName + '</td>' +
                         '<td>' + booking.startTime + '</td>' +
                         '<td>' + booking.endTime + '</td>' +
                         '<td>' + booking.deliveryLocation + '</td>' +
@@ -38,26 +33,50 @@ $(document).ready(function() {
         $('.editBtn').on('click', function() {
             let bookingId = $(this).data('id');
             $('#bookingId').val(bookingId);
-            $('#editModal').show();
+            fetchDeliveryDetails(bookingId);
+        });
+    }
+
+    function fetchDeliveryDetails(bookingId) {
+        $.ajax({
+            url: 'DeliveryDetailsServlet',
+            type: 'GET',
+            data: { bookingId: bookingId },
+            dataType: 'json',
+            success: function(data) {
+                $('#deliveryId').val(data.deliveryId);
+                $('#courierId').text(data.courierId);
+                $('#pickupLocation').text(data.pickupLocation);
+                $('#deliveryStatus').val(data.status);
+                $('#editModal').show();
+            },
+            error: function() {
+                alert('Failed to fetch delivery details');
+            }
         });
     }
 
     $('#updateStatusBtn').on('click', function() {
         let bookingId = $('#bookingId').val();
+        let deliveryId = $('#deliveryId').val();
+        let bookingStatus = $('#bookingStatus').val();
+        let deliveryStatus = $('#deliveryStatus').val();
         $.ajax({
             url: 'AcceptBookingServlet',
             type: 'POST',
             data: {
                 bookingId: bookingId,
-                status: 'approved'
+                deliveryId: deliveryId,
+                bookingStatus: bookingStatus,
+                deliveryStatus: deliveryStatus
             },
             success: function() {
-                alert('Status updated successfully');
+                alert('Statuses updated successfully');
                 $('#editModal').hide();
                 fetchBookings();
             },
             error: function() {
-                alert('Failed to update status');
+                alert('Failed to update statuses');
             }
         });
     });
