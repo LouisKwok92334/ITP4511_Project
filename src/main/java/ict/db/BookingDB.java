@@ -25,7 +25,7 @@ public class BookingDB {
     
     public List<BookingBean> getBookingsByUserId(int userId) throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM Bookings WHERE user_id = ?";
+        String sql = "SELECT b.*, e.name AS equipment_name FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id WHERE b.user_id = ?";
         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
@@ -35,6 +35,7 @@ public class BookingDB {
                 booking.setBookingId(resultSet.getInt("booking_id"));
                 booking.setUserId(resultSet.getInt("user_id"));
                 booking.setEquipmentId(resultSet.getInt("equipment_id"));
+                booking.setEquipmentName(resultSet.getString("equipment_name")); // 使用別名獲取設備名稱
                 booking.setStartTime(resultSet.getTimestamp("start_time"));
                 booking.setEndTime(resultSet.getTimestamp("end_time"));
                 booking.setDeliveryLocation(resultSet.getString("delivery_location"));
@@ -44,6 +45,7 @@ public class BookingDB {
         }
         return bookings;
     }
+
     
     public void saveBooking(BookingBean booking) throws SQLException {
         String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location) VALUES (?, ?, ?, ?, ?)";

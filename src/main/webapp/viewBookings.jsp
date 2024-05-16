@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <th>Booking ID</th>
-                    <th>Equipment ID</th>
+                    <th>Equipment Name</th>
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Status</th>
@@ -39,7 +39,7 @@
                 <% for (BookingBean booking : bookings) { %>
                 <tr>
                     <td><%= booking.getBookingId() %></td>
-                    <td><%= booking.getEquipmentId() %></td>
+                    <td><%= booking.getEquipmentName() %></td>
                     <td><%= booking.getStartTime() %></td>
                     <td><%= booking.getEndTime() %></td>
                     <td><%= booking.getStatus() %></td>

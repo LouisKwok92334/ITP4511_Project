@@ -20,6 +20,7 @@ public class BookingBean {
     private String status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private String equipmentName;
     
     public BookingBean() {}
 
@@ -93,5 +94,13 @@ public class BookingBean {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    public void setEquipmentName(String equipmentName) {
+        this.equipmentName = equipmentName;
     }
 }
