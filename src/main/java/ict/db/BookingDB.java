@@ -22,7 +22,7 @@ public class BookingDB {
 
     /**
      * Retrieves all bookings made by a specific user.
-     * 
+     *
      * @param userId the ID of the user
      * @return a list of BookingBean objects
      * @throws SQLException if a database access error occurs
@@ -30,8 +30,7 @@ public class BookingDB {
     public List<BookingBean> getBookingsByUserId(int userId) throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
         String sql = "SELECT b.*, e.name AS equipment_name FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id WHERE b.user_id = ?";
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -50,26 +49,13 @@ public class BookingDB {
         return bookings;
     }
 
-    public void saveBooking(BookingBean booking) throws SQLException {
-        String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, booking.getUserId());
-            statement.setInt(2, booking.getEquipmentId());
-            statement.setTimestamp(3, booking.getStartTime());
-            statement.setTimestamp(4, booking.getEndTime());
-            statement.setString(5, booking.getDeliveryLocation());
-            statement.executeUpdate();
-        }
-    }
 
     public List<BookingBean> getAllBookings() throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
         String sql = "SELECT b.booking_id, b.user_id, e.name AS equipment_name, b.start_time, b.end_time, b.delivery_location, b.status "
-                   + "FROM Bookings b "
-                   + "JOIN Equipment e ON b.equipment_id = e.equipment_id";
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                + "FROM Bookings b "
+                + "JOIN Equipment e ON b.equipment_id = e.equipment_id";
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 BookingBean booking = new BookingBean();
@@ -86,10 +72,31 @@ public class BookingDB {
         return bookings;
     }
 
+    public int saveBooking(BookingBean booking) throws SQLException {
+        String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, booking.getUserId());
+            stmt.setInt(2, booking.getEquipmentId());
+            stmt.setTimestamp(3, booking.getStartTime());
+            stmt.setTimestamp(4, booking.getEndTime());
+            stmt.setString(5, booking.getDeliveryLocation());
+            stmt.setString(6, booking.getStatus());
+            stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating booking failed, no ID obtained.");
+                }
+            }
+        }
+    }
+
     public void updateBookingStatus(int bookingId, String status) throws SQLException {
         String sql = "UPDATE Bookings SET status = ? WHERE booking_id = ?";
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, status);
             statement.setInt(2, bookingId);
             statement.executeUpdate();
