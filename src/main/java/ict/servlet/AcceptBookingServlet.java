@@ -2,6 +2,7 @@ package ict.servlet;
 
 import ict.bean.BookingBean;
 import ict.db.BookingDB;
+import ict.db.DeliveryDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/AcceptBookingServlet")
 public class AcceptBookingServlet extends HttpServlet {
     private BookingDB bookingDB;
+    private DeliveryDB deliveryDB;
 
     @Override
     public void init() throws ServletException {
@@ -33,6 +35,7 @@ public class AcceptBookingServlet extends HttpServlet {
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         bookingDB = new BookingDB(dbUrl, dbUser, dbPassword);
+        deliveryDB = new DeliveryDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class AcceptBookingServlet extends HttpServlet {
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             List<BookingBean> bookings = bookingDB.getAllBookings();  // Fetch all bookings
-            
+
             // Use JSON-P to create JSON response
             JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
             for (BookingBean booking : bookings) {
@@ -62,8 +65,8 @@ public class AcceptBookingServlet extends HttpServlet {
             throw new ServletException("Error retrieving bookings", e);
         }
     }
-    
-     @Override
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));
@@ -71,6 +74,10 @@ public class AcceptBookingServlet extends HttpServlet {
 
         try {
             bookingDB.updateBookingStatus(bookingId, status);
+            // Create a delivery record when booking is approved
+            if ("approved".equalsIgnoreCase(status)) {
+                deliveryDB.createDelivery(bookingId);
+            }
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (SQLException e) {
             throw new ServletException("Error updating booking status", e);
