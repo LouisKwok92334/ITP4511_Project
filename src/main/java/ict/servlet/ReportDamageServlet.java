@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ict.servlet;
 
 import java.io.IOException;
@@ -19,7 +15,7 @@ public class ReportDamageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String dbUrl = "jdbc:mysql://localhost:3306/ITP4511_Project";
         String user = "root";
-        String password = ""; // XAMPP的MySQL默認密碼通常為空
+        String password = ""; // XAMPP's MySQL default password is usually empty
 
         String equipmentId = request.getParameter("equipmentId");
         String reportedBy = request.getParameter("reportedBy");

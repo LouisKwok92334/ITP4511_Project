@@ -3,13 +3,19 @@ package ict.db;
 import ict.bean.EquipmentBean;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class EquipmentDB {
 
     private String dburl;
     private String dbUser;
     private String dbPassword;
+
+    public EquipmentDB() {
+        // Default constructor with default database connection parameters
+        this.dburl = "jdbc:mysql://localhost:3306/ITP4511_Project";
+        this.dbUser = "root";
+        this.dbPassword = ""; // Default password for XAMPP's MySQL
+    }
 
     public EquipmentDB(String dburl, String dbUser, String dbPassword) {
         this.dburl = dburl;
@@ -30,14 +36,30 @@ public class EquipmentDB {
 
     public ArrayList<EquipmentBean> getAllEquipment() {
         ArrayList<EquipmentBean> equipments = new ArrayList<>();
-        HashSet<Integer> equipmentIds = new HashSet<>();
         String sql = "SELECT * FROM Equipment";
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int equipmentId = rs.getInt("equipment_id");
                 equipments.add(extractEquipment(rs));
-                equipmentIds.add(equipmentId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return equipments;
+    }
+
+    public ArrayList<EquipmentBean> getEquipmentNamesAndIds() {
+        ArrayList<EquipmentBean> equipments = new ArrayList<>();
+        String sql = "SELECT equipment_id, name FROM Equipment";
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                EquipmentBean equipment = new EquipmentBean();
+                equipment.setEquipmentId(rs.getInt("equipment_id"));
+                equipment.setName(rs.getString("name"));
+                equipments.add(equipment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,7 +70,8 @@ public class EquipmentDB {
     public EquipmentBean getEquipmentById(int id) {
         EquipmentBean equipment = null;
         String sql = "SELECT * FROM Equipment WHERE equipment_id = ?";
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -67,10 +90,11 @@ public class EquipmentDB {
             sql = "UPDATE Equipment SET name = ?, description = ?, status = ?, location = ?, staff_only = ? WHERE equipment_id = ?";
         } else {
             // Insert new equipment
-            sql = "INSERT INTO Equipment (name, description, status, location, staff_only) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO Equipment (name, description, status, location, staff_only) VALUES (?, ?, ?, ?, ?)";
         }
 
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, equipment.getName());
             ps.setString(2, equipment.getDescription());
             ps.setString(3, equipment.getStatus());

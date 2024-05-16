@@ -6,8 +6,10 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="ict.bean.EquipmentBean" %>
+<%@ page import="ict.db.EquipmentDB" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
- <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
+<jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
+<jsp:useBean id="equipmentDB" class="ict.db.EquipmentDB" scope="application"/>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -54,9 +56,14 @@
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
                 <span onclick="closeReportModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
                 <p>Report Damage</p>
-             
+
                 <form id="reportDamageForm" method="post" action="ReportDamageServlet">
-                    Equipment ID: <input type="text" name="equipmentId" required><br>
+                    Equipment:
+                    <select name="equipmentId" required>
+                        <c:forEach var="equipment" items="${equipmentDB.getEquipmentNamesAndIds()}">
+                            <option value="${equipment.equipmentId}">${equipment.name}</option>
+                        </c:forEach>
+                    </select><br>
                     Reported By (User ID): <input type="text" name="reportedBy" value="${userInfo.userId}" required><br>
                     Description: <textarea name="description" required></textarea><br>
                     <button type="submit">Submit Report</button>
