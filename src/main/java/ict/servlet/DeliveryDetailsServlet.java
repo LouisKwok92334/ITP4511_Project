@@ -9,6 +9,7 @@ package ict.servlet;
  * @author boscochuen
  */
 
+
 import ict.bean.DeliveryBean;
 import ict.db.DeliveryDB;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class DeliveryDetailsServlet extends HttpServlet {
             e.printStackTrace();
             throw new ServletException("MySQL JDBC driver not found", e);
         }
+
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
@@ -44,21 +46,28 @@ public class DeliveryDetailsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int bookingId = Integer.parseInt(request.getParameter("bookingId"));
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+
         try (PrintWriter out = response.getWriter()) {
             DeliveryBean delivery = deliveryDB.getDeliveryByBookingId(bookingId);
-            JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder()
-                    .add("deliveryId", delivery.getDeliveryId())
-                    .add("courierId", delivery.getCourierId())
-                    .add("pickupLocation", delivery.getPickupLocation())
-                    .add("status", delivery.getStatus());
-            String json = jsonObjectBuilder.build().toString();
-            out.print(json);
-            out.flush();
+
+            if (delivery != null) {
+                JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+                jsonObjectBuilder.add("deliveryId", delivery.getDeliveryId())
+                                 .add("courierId", delivery.getCourierId())
+                                 .add("pickupLocation", delivery.getPickupLocation())
+                                 .add("status", delivery.getStatus());
+                String json = jsonObjectBuilder.build().toString();
+                out.print(json);
+                out.flush();
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
         } catch (SQLException e) {
             throw new ServletException("Error retrieving delivery details", e);
         }
     }
 }
-
