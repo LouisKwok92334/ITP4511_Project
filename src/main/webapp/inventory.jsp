@@ -22,7 +22,9 @@
         <div class="header">
             <h1>Inventory Data</h1>
             <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
-            <button onclick="openReportModal()">Report Damages</button>
+            <% if ("admin".equals(userInfo.getRole())) { %>
+                <button onclick="openReportModal()">Report Damages</button>
+            <% } %> <!-- Closing brace for the if statement -->
             <div id="inventory"></div>
         </div>
 
@@ -31,7 +33,6 @@
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
                 <span onclick="closeModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
                 <p>Edit Equipment</p>
-             
                 <form id="editEquipmentForm">
                     <input type="hidden" id="editId">
                     Name: <input type="text" id="editName" disabled><br>
@@ -45,7 +46,6 @@
                     </select><br>
                     Location: <input type="text" id="editLocation" disabled><br>
                     Staff Only: <input type="checkbox" id="editStaffOnly" disabled><br>
-
                     <button type="button" onclick="submitEdit()">Save Changes</button>
                 </form>
             </div>
@@ -56,7 +56,6 @@
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
                 <span onclick="closeReportModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
                 <p>Report Damage</p>
-
                 <form id="reportDamageForm" method="post" action="ReportDamageServlet">
                     Equipment:
                     <select name="equipmentId" required>

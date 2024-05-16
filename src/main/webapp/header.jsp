@@ -49,8 +49,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="createAccount.jsp">Manage Account</a>
                         </li>
-                        
-                        
+                                             
                     <% } %>
                     <% if ("courier".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
