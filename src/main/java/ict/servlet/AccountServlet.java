@@ -8,6 +8,7 @@ package ict.servlet;
  *
  * @author boscochuen
  */
+
 import java.io.IOException;
 import java.sql.*;
 import jakarta.servlet.ServletException;
@@ -38,6 +39,8 @@ public class AccountServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("update".equals(action)) {
             updateAccount(request, response);
+        } else if ("create".equals(action)) {
+            createAccount(request, response);
         }
     }
 
@@ -97,6 +100,7 @@ public class AccountServlet extends HttpServlet {
     private void updateAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = Integer.parseInt(request.getParameter("user_id"));
         String username = request.getParameter("username");
+        String password = request.getParameter("password"); // Password field
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
         String email = request.getParameter("email");
@@ -104,17 +108,50 @@ public class AccountServlet extends HttpServlet {
         String role = request.getParameter("role");
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement("UPDATE Users SET username = ?, first_name = ?, last_name = ?, email = ?, phone_number = ?, role = ? WHERE user_id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("UPDATE Users SET username = ?, password = ?, first_name = ?, last_name = ?, email = ?, phone_number = ?, role = ? WHERE user_id = ?")) {
             stmt.setString(1, username);
-            stmt.setString(2, firstName);
-            stmt.setString(3, lastName);
-            stmt.setString(4, email);
-            stmt.setString(5, phoneNumber);
-            stmt.setString(6, role);
-            stmt.setInt(7, userId);
+            stmt.setString(2, password); // Set password
+            stmt.setString(3, firstName);
+            stmt.setString(4, lastName);
+            stmt.setString(5, email);
+            stmt.setString(6, phoneNumber);
+            stmt.setString(7, role);
+            stmt.setInt(8, userId);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            response.setContentType("text/plain");
+            response.getWriter().write("Error: " + e.getMessage());
+            return;
+        }
+        response.setContentType("text/plain");
+        response.getWriter().write("Success");
+    }
+
+    private void createAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password"); // Password field
+        String firstName = request.getParameter("first_name");
+        String lastName = request.getParameter("last_name");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phone_number");
+        String role = request.getParameter("role");
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Users (username, password, first_name, last_name, email, phone_number, role) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            stmt.setString(1, username);
+            stmt.setString(2, password); // Set password
+            stmt.setString(3, firstName);
+            stmt.setString(4, lastName);
+            stmt.setString(5, email);
+            stmt.setString(6, phoneNumber);
+            stmt.setString(7, role);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.setContentType("text/plain");
+            response.getWriter().write("Error: " + e.getMessage());
+            return;
         }
         response.setContentType("text/plain");
         response.getWriter().write("Success");

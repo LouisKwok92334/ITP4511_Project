@@ -1,21 +1,21 @@
 <%-- 
     Document   : createAccount
-    Created on : 2024年5月16日, 下午11:46:14
+    Created on : 2024?5?16?, ??11:46:14
     Author     : boscochuen
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
-         <jsp:include page="header.jsp"/>
+        <jsp:include page="header.jsp"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Account Management</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     </head>
     <body>
         <div class="container">
             <h1>Account Management</h1>
+            <button class="btn btn-success mb-3" id="createAccountButton">Create Account</button>
             <table class="table">
                 <thead>
                     <tr>
@@ -35,42 +35,46 @@
             </table>
         </div>
 
-        <!-- Edit Modal -->
-        <div class="modal" id="editModal" tabindex="-1" role="dialog">
+        <!-- Create/Edit Modal -->
+        <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Account</h5>
+                        <h5 class="modal-title" id="accountModalLabel">Create/Edit Account</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="editForm">
-                            <input type="hidden" id="editUserId" name="user_id">
+                        <form id="accountForm">
+                            <input type="hidden" id="userId" name="user_id">
                             <div class="form-group">
-                                <label for="editUsername">Username</label>
-                                <input type="text" class="form-control" id="editUsername" name="username" required>
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
                             </div>
                             <div class="form-group">
-                                <label for="editFirstName">First Name</label>
-                                <input type="text" class="form-control" id="editFirstName" name="first_name">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="form-group">
-                                <label for="editLastName">Last Name</label>
-                                <input type="text" class="form-control" id="editLastName" name="last_name">
+                                <label for="firstName">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="first_name">
                             </div>
                             <div class="form-group">
-                                <label for="editEmail">Email</label>
-                                <input type="email" class="form-control" id="editEmail" name="email">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="last_name">
                             </div>
                             <div class="form-group">
-                                <label for="editPhoneNumber">Phone Number</label>
-                                <input type="text" class="form-control" id="editPhoneNumber" name="phone_number">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
                             </div>
                             <div class="form-group">
-                                <label for="editRole">Role</label>
-                                <select class="form-control" id="editRole" name="role" required>
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber" name="phone_number">
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select class="form-control" id="role" name="role" required>
                                     <option value="user">User</option>
                                     <option value="staff">Staff</option>
                                     <option value="technician">Technician</option>
@@ -88,67 +92,103 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 // Fetch and display accounts
                 $.ajax({
                     url: 'AccountServlet?action=list',
                     method: 'GET',
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         var accountTableBody = $('#accountTableBody');
                         accountTableBody.empty();
-                        $.each(data, function(index, account) {
+                        $.each(data, function (index, account) {
                             accountTableBody.append(
-                                '<tr>' +
-                                '<td>' + account.user_id + '</td>' +
-                                '<td>' + account.username + '</td>' +
-                                '<td>' + account.first_name + '</td>' +
-                                '<td>' + account.last_name + '</td>' +
-                                '<td>' + account.email + '</td>' +
-                                '<td>' + account.phone_number + '</td>' +
-                                '<td>' + account.role + '</td>' +
-                                '<td><button class="btn btn-primary editButton" data-id="' + account.user_id + '">Edit</button></td>' +
-                                '</tr>'
-                            );
+                                    '<tr>' +
+                                    '<td>' + account.user_id + '</td>' +
+                                    '<td>' + account.username + '</td>' +
+                                    '<td>' + account.first_name + '</td>' +
+                                    '<td>' + account.last_name + '</td>' +
+                                    '<td>' + account.email + '</td>' +
+                                    '<td>' + account.phone_number + '</td>' +
+                                    '<td>' + account.role + '</td>' +
+                                    '<td><button class="btn btn-primary editButton" data-id="' + account.user_id + '">Edit</button></td>' +
+                                    '</tr>'
+                                    );
                         });
                     }
                 });
 
+                $(document).on('click', '.close, .btn-secondary', function () {
+                    $('#accountModal').modal('hide');
+                });
+
+                // Handle create account button click
+                $('#createAccountButton').click(function () {
+                    $('#accountForm')[0].reset();
+                    $('#userId').val('');
+                    $('#accountModalLabel').text('Create Account');
+                    $('#saveChangesButton').off('click').click(createAccount);
+                    $('#accountModal').modal('show');
+                });
+
                 // Handle edit button click
-                $(document).on('click', '.editButton', function() {
+                $(document).on('click', '.editButton', function () {
                     var userId = $(this).data('id');
                     $.ajax({
                         url: 'AccountServlet?action=get&user_id=' + userId,
                         method: 'GET',
                         dataType: 'json',
-                        success: function(account) {
-                            $('#editUserId').val(account.user_id);
-                            $('#editUsername').val(account.username);
-                            $('#editFirstName').val(account.first_name);
-                            $('#editLastName').val(account.last_name);
-                            $('#editEmail').val(account.email);
-                            $('#editPhoneNumber').val(account.phone_number);
-                            $('#editRole').val(account.role);
-                            $('#editModal').modal('show');
+                        success: function (account) {
+                            $('#userId').val(account.user_id);
+                            $('#username').val(account.username);
+                            $('#password').val(''); // Password should not be pre-filled for security reasons
+                            $('#firstName').val(account.first_name);
+                            $('#lastName').val(account.last_name);
+                            $('#email').val(account.email);
+                            $('#phoneNumber').val(account.phone_number);
+                            $('#role').val(account.role);
+                            $('#accountModalLabel').text('Edit Account');
+                            $('#saveChangesButton').off('click').click(updateAccount);
+                            $('#accountModal').modal('show');
                         }
                     });
                 });
 
                 // Handle save changes button click
-                $('#saveChangesButton').click(function() {
+                function createAccount() {
+                    $.ajax({
+                        url: 'AccountServlet?action=create',
+                        method: 'POST',
+                        data: $('#accountForm').serialize(),
+                        success: function (response) {
+                            $('#accountModal').modal('hide');
+                            location.reload(); // Reload the page to reflect the changes
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + xhr.responseText);
+                        }
+                    });
+                }
+
+                function updateAccount() {
                     $.ajax({
                         url: 'AccountServlet?action=update',
                         method: 'POST',
-                        data: $('#editForm').serialize(),
-                        success: function(response) {
-                            $('#editModal').modal('hide');
+                        data: $('#accountForm').serialize(),
+                        success: function (response) {
+                            $('#accountModal').modal('hide');
                             location.reload(); // Reload the page to reflect the changes
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + xhr.responseText);
                         }
                     });
-                });
+                }
             });
         </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>
