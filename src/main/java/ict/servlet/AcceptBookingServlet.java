@@ -52,6 +52,7 @@ public class AcceptBookingServlet extends HttpServlet {
                 jsonObjectBuilder.add("bookingId", booking.getBookingId())
                                   .add("userId", booking.getUserId())
                                   .add("equipmentId", booking.getEquipmentId())
+                                  .add("equipmentName", booking.getEquipmentName())
                                   .add("startTime", booking.getStartTime().toString())
                                   .add("endTime", booking.getEndTime() != null ? booking.getEndTime().toString() : "")
                                   .add("deliveryLocation", booking.getDeliveryLocation())

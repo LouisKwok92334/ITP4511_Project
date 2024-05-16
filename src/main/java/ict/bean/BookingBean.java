@@ -21,17 +21,8 @@ public class BookingBean {
     private String status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private String equipmentName;
     
     public BookingBean() {}
-    
-    public String getEquipmentName() {
-        return equipmentName;
-    }
-
-    public void setEquipmentName(String equipmentName) {
-        this.equipmentName = equipmentName;
-    }
     
     public int getBookingId() {
         return bookingId;

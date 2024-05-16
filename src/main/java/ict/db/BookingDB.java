@@ -39,7 +39,7 @@ public class BookingDB {
                 booking.setBookingId(resultSet.getInt("booking_id"));
                 booking.setUserId(resultSet.getInt("user_id"));
                 booking.setEquipmentId(resultSet.getInt("equipment_id"));
-                booking.setEquipmentName(resultSet.getString("equipment_name")); // 使用別名獲取設備名稱
+                booking.setEquipmentName(resultSet.getString("equipment_name"));
                 booking.setStartTime(resultSet.getTimestamp("start_time"));
                 booking.setEndTime(resultSet.getTimestamp("end_time"));
                 booking.setDeliveryLocation(resultSet.getString("delivery_location"));
