@@ -6,6 +6,7 @@ package ict.db;
 
 import ict.bean.DeliveryBean;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,14 +95,12 @@ public class DeliveryDB {
         }
     }
 
-
     public List<DeliveryBean> getAllDeliveries() throws SQLException {
         List<DeliveryBean> deliveries = new ArrayList<>();
         String sql = "SELECT d.*, u.first_name, u.last_name FROM Deliveries d "
-                   + "JOIN Users u ON d.courier_id = u.user_id";
+                + "JOIN Users u ON d.courier_id = u.user_id";
 
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 DeliveryBean delivery = new DeliveryBean();
@@ -120,6 +119,61 @@ public class DeliveryDB {
             }
         }
         return deliveries;
+    }
+
+    public List<DeliveryBean> getDeliveriesByUserId(int userId) throws SQLException {
+        List<DeliveryBean> deliveries = new ArrayList<>();
+        String sql = "SELECT d.*, u.first_name, u.last_name FROM Deliveries d "
+                + "JOIN Users u ON d.courier_id = u.user_id "
+                + "WHERE d.courier_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                DeliveryBean delivery = new DeliveryBean();
+                delivery.setDeliveryId(rs.getInt("delivery_id"));
+                delivery.setBookingId(rs.getInt("booking_id"));
+                delivery.setCourierId(rs.getInt("courier_id"));
+                delivery.setPickupLocation(rs.getString("pickup_location"));
+                delivery.setStatus(rs.getString("status"));
+                delivery.setScheduledTime(rs.getTimestamp("scheduled_time"));
+                delivery.setDeliveredTime(rs.getTimestamp("delivered_time"));
+                delivery.setCreatedAt(rs.getTimestamp("created_at"));
+                delivery.setUpdatedAt(rs.getTimestamp("updated_at"));
+                String courierName = rs.getString("first_name") + " " + rs.getString("last_name");
+                delivery.setCourierName(courierName);
+                deliveries.add(delivery);
+            }
+        }
+        return deliveries;
+    }
+
+    public void updateDeliveryStatus(int deliveryId, String status, String deliveredTime) throws SQLException {
+        // Start by setting the SQL to only update the status and the generic update timestamp
+        String sql = "UPDATE Deliveries SET status = ?, updated_at = CURRENT_TIMESTAMP";
+
+        // If the status is 'delivered' and a deliveredTime is provided, add that field to the update
+        if (deliveredTime != null && status.equals("delivered")) {
+            sql += ", delivered_time = ?";
+        }
+
+        sql += " WHERE delivery_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, status); // Set the status
+
+            // Check if deliveredTime needs to be set
+            if (deliveredTime != null && status.equals("delivered")) {
+                statement.setTimestamp(2, Timestamp.from(Instant.parse(deliveredTime))); // Set the delivered time
+                statement.setInt(3, deliveryId); // Set the WHERE clause parameter for delivery_id
+            } else {
+                statement.setInt(2, deliveryId); // Set the WHERE clause parameter for delivery_id if no deliveredTime
+            }
+
+            statement.executeUpdate(); // Execute the update
+        }
     }
 
 }
