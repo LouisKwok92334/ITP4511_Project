@@ -6,6 +6,8 @@ package ict.db;
 
 import ict.bean.DeliveryBean;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeliveryDB {
 
@@ -27,13 +29,10 @@ public class DeliveryDB {
         String fetchBookingSQL = "SELECT delivery_location FROM Bookings WHERE booking_id = ?";
 
         // 插入新的Delivery记录
-        String insertDeliverySQL = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) " +
-                                   "VALUES (?, ?, ?, 'scheduled', CURRENT_TIMESTAMP)";
+        String insertDeliverySQL = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) "
+                + "VALUES (?, ?, ?, 'scheduled', CURRENT_TIMESTAMP)";
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); 
-             PreparedStatement fetchCourierStmt = connection.prepareStatement(fetchCourierSQL); 
-             PreparedStatement fetchBookingStmt = connection.prepareStatement(fetchBookingSQL); 
-             PreparedStatement insertDeliveryStmt = connection.prepareStatement(insertDeliverySQL)) {
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement fetchCourierStmt = connection.prepareStatement(fetchCourierSQL); PreparedStatement fetchBookingStmt = connection.prepareStatement(fetchBookingSQL); PreparedStatement insertDeliveryStmt = connection.prepareStatement(insertDeliverySQL)) {
 
             // 获取任意一个courier的user_id
             ResultSet courierResultSet = fetchCourierStmt.executeQuery();
@@ -94,4 +93,33 @@ public class DeliveryDB {
             statement.executeUpdate();
         }
     }
+
+
+    public List<DeliveryBean> getAllDeliveries() throws SQLException {
+        List<DeliveryBean> deliveries = new ArrayList<>();
+        String sql = "SELECT d.*, u.first_name, u.last_name FROM Deliveries d "
+                   + "JOIN Users u ON d.courier_id = u.user_id";
+
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                DeliveryBean delivery = new DeliveryBean();
+                delivery.setDeliveryId(rs.getInt("delivery_id"));
+                delivery.setBookingId(rs.getInt("booking_id"));
+                delivery.setCourierId(rs.getInt("courier_id"));
+                delivery.setPickupLocation(rs.getString("pickup_location"));
+                delivery.setStatus(rs.getString("status"));
+                delivery.setScheduledTime(rs.getTimestamp("scheduled_time"));
+                delivery.setDeliveredTime(rs.getTimestamp("delivered_time"));
+                delivery.setCreatedAt(rs.getTimestamp("created_at"));
+                delivery.setUpdatedAt(rs.getTimestamp("updated_at"));
+                String courierName = rs.getString("first_name") + " " + rs.getString("last_name");
+                delivery.setCourierName(courierName);
+                deliveries.add(delivery);
+            }
+        }
+        return deliveries;
+    }
+
 }

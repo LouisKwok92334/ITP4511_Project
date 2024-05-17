@@ -7,6 +7,7 @@ package ict.bean;
 import java.sql.Timestamp;
 
 public class DeliveryBean {
+
     private int deliveryId;
     private int bookingId;
     private int courierId;
@@ -16,6 +17,15 @@ public class DeliveryBean {
     private Timestamp deliveredTime;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private String courierName; // Add this line to the class properties
+
+    public String getCourierName() {
+        return courierName;
+    }
+
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
+    }
 
     // Getters and setters
     public int getDeliveryId() {
