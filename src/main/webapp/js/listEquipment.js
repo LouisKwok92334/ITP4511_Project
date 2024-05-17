@@ -28,35 +28,35 @@ function toggleWishList(userId, equipmentId, button) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: 'user_id=' + userId + '&equipment_id=' + equipmentId
+        body: 'action=toggle&user_id=' + userId + '&equipment_id=' + equipmentId  // 添加 action 参数
     })
     .then(response => response.json())
     .then(data => {
         if (data.added) {
-            button.innerHTML = '❤️'; 
+            button.innerHTML = '❤️';
         } else {
-            button.innerHTML = '♡'; 
+            button.innerHTML = '♡';
         }
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
-window.onload = function() {
-    fetch('WishListServlet', {
+window.onload = function () {
+    fetch('WishListServlet?action=view', {
         method: 'GET'
     })
-    .then(response => response.json())
-    .then(data => {
-        const wishlist = new Set(data);
-        document.querySelectorAll('button[data-equipment-id]').forEach(button => {
-            const equipmentId = parseInt(button.getAttribute('data-equipment-id'));
-            if (wishlist.has(equipmentId)) {
-                button.innerHTML = '❤️';
-            } else {
-                button.innerHTML = '♡';
-            }
-        });
-    })
-    .catch(error => console.error('Error loading wishlist:', error));
+            .then(response => response.json())
+            .then(data => {
+                const wishlist = new Set(data);
+                document.querySelectorAll('button[data-equipment-id]').forEach(button => {
+                    const equipmentId = parseInt(button.getAttribute('data-equipment-id'));
+                    if (wishlist.has(equipmentId)) {
+                        button.innerHTML = '❤️';
+                    } else {
+                        button.innerHTML = '♡';
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading wishlist:', error));
 };

@@ -62,29 +62,29 @@ public class ResetTablesData {
         stmt.execute(insertUsersData);
 
         // 插入Equipment表的預設資料
-        String insertEquipmentData = "INSERT INTO Equipment (name, description, status, location, staff_only) VALUES " +
-                "('Laptop 1', 'Dell XPS 15', 'available', 'IT Department', FALSE)," +
-                "('Projector 1', 'Epson 5040UB', 'available', 'Conference Room', FALSE)," +
-                "('Laptop 2', 'Apple MacBook Pro', 'available', 'IT Department', TRUE)," +
-                "('Camera 1', 'Canon EOS 5D', 'maintenance', 'Media Room', TRUE)," +
-                "('Microphone 1', 'Shure SM7B', 'available', 'Recording Studio', FALSE)," +
-                "('Laptop 3', 'HP Spectre x360', 'available', 'IT Department', FALSE)," +
-                "('Printer 1', 'HP LaserJet Pro', 'unavailable', 'Admin Office', TRUE)," +
-                "('Scanner 1', 'Fujitsu ScanSnap iX1500', 'available', 'Main Office', FALSE)," +
-                "('Laptop 4', 'Lenovo ThinkPad X1 Carbon', 'available', 'IT Department', FALSE)," +
-                "('Tablet 1', 'Apple iPad Pro', 'reserved', 'Design Studio', FALSE)," +
-                "('Projector 2', 'BenQ TK850', 'available', 'Conference Room', FALSE)," +
-                "('Camera 2', 'Nikon D850', 'maintenance', 'Media Room', TRUE)," +
-                "('Microphone 2', 'Audio-Technica AT2020', 'available', 'Recording Studio', FALSE)," +
-                "('Printer 2', 'Brother HL-L2395DW', 'available', 'Admin Office', FALSE)," +
-                "('Scanner 2', 'Canon CanoScan LiDE400', 'available', 'Main Office', FALSE);";
+        String insertEquipmentData = "INSERT INTO Equipment (name, description, status, location, staff_only) VALUES "
+                + "('Laptop 1', 'Dell XPS 15', 'available', 'Chai Wan', FALSE),"
+                + "('Projector 1', 'Epson 5040UB', 'available', 'Tsing Yi', FALSE),"
+                + "('Laptop 2', 'Apple MacBook Pro', 'available', 'Sha Tin', TRUE),"
+                + "('Camera 1', 'Canon EOS 5D', 'maintenance', 'Tuen Mun', TRUE),"
+                + "('Microphone 1', 'Shure SM7B', 'available', 'Lee Wai Lee', FALSE),"
+                + "('Laptop 3', 'HP Spectre x360', 'available', 'Chai Wan', FALSE),"
+                + "('Printer 1', 'HP LaserJet Pro', 'unavailable', 'Tsing Yi', TRUE),"
+                + "('Scanner 1', 'Fujitsu ScanSnap iX1500', 'available', 'Sha Tin', FALSE),"
+                + "('Laptop 4', 'Lenovo ThinkPad X1 Carbon', 'available', 'Tuen Mun', FALSE),"
+                + "('Tablet 1', 'Apple iPad Pro', 'reserved', 'Lee Wai Lee', FALSE),"
+                + "('Projector 2', 'BenQ TK850', 'available', 'Chai Wan', FALSE),"
+                + "('Camera 2', 'Nikon D850', 'maintenance', 'Sha Tin', TRUE),"
+                + "('Microphone 2', 'Audio-Technica AT2020', 'available', 'Tuen Mun', FALSE),"
+                + "('Printer 2', 'Brother HL-L2395DW', 'available', 'Tsing Yi', FALSE),"
+                + "('Scanner 2', 'Canon CanoScan LiDE400', 'available', 'Lee Wai Lee', FALSE);";
         stmt.execute(insertEquipmentData);
 
 
         // 插入Bookings表的預設資料
         String insertBookingsData = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, status, delivery_location) VALUES " +
-                "(1, 1, '2024-05-10 09:00:00', '2024-05-12 18:00:00', 'pending', 'ST')," +
-                "(2, 2, '2024-06-01 10:00:00', '2024-06-03 20:00:00', 'approved', 'LWL');";
+                "(1, 1, '2024-05-10 09:00:00', '2024-05-12 18:00:00', 'pending', 'Sha Tin')," +
+                "(2, 2, '2024-06-01 10:00:00', '2024-06-03 20:00:00', 'approved', 'Lee Wai Lee');";
         stmt.execute(insertBookingsData);
 
         // 插入DamageReports表的預設資料

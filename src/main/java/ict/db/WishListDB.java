@@ -4,8 +4,11 @@
  */
 package ict.db;
 
+import ict.bean.EquipmentBean;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -72,6 +75,30 @@ public class WishListDB {
             return false; // Error case
         }
     }  
+    
+    public List<EquipmentBean> getWishlistByUserId(int userId) {
+        List<EquipmentBean> wishlist = new ArrayList<>();
+        String sql = "SELECT e.* FROM Equipment e JOIN Wishlist w ON e.equipment_id = w.equipment_id WHERE w.user_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                EquipmentBean equipment = new EquipmentBean();
+                equipment.setEquipmentId(rs.getInt("equipment_id"));
+                equipment.setName(rs.getString("name"));
+                equipment.setDescription(rs.getString("description"));
+                equipment.setStatus(rs.getString("status"));
+                equipment.setLocation(rs.getString("location"));
+                wishlist.add(equipment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return wishlist;
+    }
     
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(dburl, dbUser, dbPassword);
