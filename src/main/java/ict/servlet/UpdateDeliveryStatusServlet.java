@@ -9,9 +9,11 @@ package ict.servlet;
  * @author boscochuen
  */
 
+
 import ict.db.DeliveryDB;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.Instant;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 @WebServlet(name = "UpdateDeliveryStatusServlet", urlPatterns = {"/UpdateDeliveryStatusServlet"})
 public class UpdateDeliveryStatusServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
@@ -30,9 +33,10 @@ public class UpdateDeliveryStatusServlet extends HttpServlet {
             JSONObject jsonRequest = new JSONObject(request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual));
             int deliveryId = jsonRequest.getInt("deliveryId");
             String status = jsonRequest.getString("status");
+            String deliveredTime = jsonRequest.optString("deliveredTime", null);
 
             DeliveryDB deliveryDB = new DeliveryDB("jdbc:mysql://localhost:3306/ITP4511_Project", "root", "");
-            deliveryDB.updateDeliveryStatus(deliveryId, status);
+            deliveryDB.updateDeliveryStatus(deliveryId, status, deliveredTime);
 
             JSONObject jsonResponse = new JSONObject();
             jsonResponse.put("success", true);

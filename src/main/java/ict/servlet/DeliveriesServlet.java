@@ -23,11 +23,13 @@ public class DeliveriesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-
+        // Assuming the user ID is stored in the session
+        int userId = (int) request.getSession().getAttribute("userId");
+        
         try {
             DeliveryDB deliveryDB = new DeliveryDB("jdbc:mysql://localhost:3306/ITP4511_Project", "root", ""); // Adjust parameters as needed
-            List<DeliveryBean> deliveries = deliveryDB.getAllDeliveries();
-
+//            List<DeliveryBean> deliveries = deliveryDB.getAllDeliveries();
+            List<DeliveryBean> deliveries = deliveryDB.getDeliveriesByUserId(userId);
             JSONArray jsonArray = new JSONArray();
             for (DeliveryBean delivery : deliveries) {
                 JSONObject json = new JSONObject();
