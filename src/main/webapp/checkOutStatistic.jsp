@@ -33,7 +33,14 @@
             <div class="form-group">
                 <label for="yearSelect">Select Year:</label>
                 <select id="yearSelect" class="form-control">
-                    <!-- Add options dynamically via JavaScript -->
+                    <!-- Add year options dynamically via JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="monthSelect">Select Month:</label>
+                <select id="monthSelect" class="form-control">
+                    <!-- Add month options dynamically via JavaScript -->
                 </select>
             </div>
 
@@ -51,19 +58,35 @@
             $(document).ready(function () {
                 // Populate year select options
                 var currentYear = new Date().getFullYear();
-               $('#yearSelect').append('<option value="2024">2024</option>');
-               $('#yearSelect').append('<option value="2023">2023</option>');
-               $('#yearSelect').append('<option value="2022">2022</option>');
-               
+
+                $('#yearSelect').append(`<option value="2024">2024</option>`);
+                $('#yearSelect').append(`<option value="2023">2023</option>`);
+                $('#yearSelect').append(`<option value="2022">2022</option>`);
+
+                // Populate month select options
+
+                $('#monthSelect').append(`<option value="1">January</option>`);
+                $('#monthSelect').append(`<option value="2">February</option>`);
+                $('#monthSelect').append(`<option value="3">March</option>`);
+                $('#monthSelect').append(`<option value="4">April</option>`);
+                $('#monthSelect').append(`<option value="5">May</option>`);
+                $('#monthSelect').append(`<option value="6">June</option>`);
+                $('#monthSelect').append(`<option value="7">July</option>`);
+                $('#monthSelect').append(`<option value="8">August</option>`);
+                $('#monthSelect').append(`<option value="9">September</option>`);
+                $('#monthSelect').append(`<option value="10">October</option>`);
+                $('#monthSelect').append(`<option value="11">November</option>`);
+                $('#monthSelect').append(`<option value="12">December</option>`);
+
                 var checkoutChart;
                 var locationChart;
 
-                function fetchStatistics(year) {
+                function fetchStatistics(year, month) {
                     // Fetching checkout statistics
                     $.ajax({
                         url: 'CheckOutStatistic',
                         method: 'GET',
-                        data: { year: year },
+                        data: {year: year, month: month},
                         dataType: 'json',
                         success: function (data) {
                             var labels = [];
@@ -82,12 +105,12 @@
                                 data: {
                                     labels: labels,
                                     datasets: [{
-                                        label: '# of Checkouts',
-                                        data: checkouts,
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        borderWidth: 1
-                                    }]
+                                            label: '# of Checkouts',
+                                            data: checkouts,
+                                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
                                 },
                                 options: {
                                     responsive: true,
@@ -109,7 +132,7 @@
                     $.ajax({
                         url: 'LocationStatisticServlet',
                         method: 'GET',
-                        data: { year: year },
+                        data: {year: year, month: month},
                         dataType: 'json',
                         success: function (data) {
                             var locations = [];
@@ -128,12 +151,12 @@
                                 data: {
                                     labels: locations,
                                     datasets: [{
-                                        label: 'Number of Bookings',
-                                        data: counts,
-                                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                                        borderColor: 'rgba(153, 102, 255, 1)',
-                                        borderWidth: 1
-                                    }]
+                                            label: 'Number of Bookings',
+                                            data: counts,
+                                            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                            borderColor: 'rgba(153, 102, 255, 1)',
+                                            borderWidth: 1
+                                        }]
                                 },
                                 options: {
                                     responsive: true,
@@ -155,13 +178,14 @@
                     });
                 }
 
-                // Fetch initial data for the current year
-                fetchStatistics(currentYear);
+                // Fetch initial data for the current year and month
+                fetchStatistics(currentYear, new Date().getMonth() + 1);
 
-                // Update charts when the selected year changes
-                $('#yearSelect').change(function () {
-                    var selectedYear = $(this).val();
-                    fetchStatistics(selectedYear);
+                // Update charts when the selected year or month changes
+                $('#yearSelect, #monthSelect').change(function () {
+                    var selectedYear = $('#yearSelect').val();
+                    var selectedMonth = $('#monthSelect').val();
+                    fetchStatistics(selectedYear, selectedMonth);
                 });
             });
         </script>

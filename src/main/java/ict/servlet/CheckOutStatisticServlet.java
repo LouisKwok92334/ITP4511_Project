@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/CheckOutStatistic")
 public class CheckOutStatisticServlet extends HttpServlet {
-
     private static final String DB_URL = "jdbc:mysql://localhost:3306/ITP4511_Project";
     private static final String USER = "root";
     private static final String PASSWORD = "";
@@ -30,14 +29,18 @@ public class CheckOutStatisticServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String year = request.getParameter("year");
+        String month = request.getParameter("month");
         List<CheckoutStatistic> statistics = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD); PreparedStatement stmt = conn.prepareStatement(
-                "SELECT e.name AS equipment_name, COUNT(b.booking_id) AS checkouts "
-                + "FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id "
-                + "WHERE YEAR(b.created_at) = ? "
-                + "GROUP BY e.name")) {
+        String sql = "SELECT e.name AS equipment_name, COUNT(b.booking_id) AS checkouts " +
+                     "FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id " +
+                     "WHERE YEAR(b.created_at) = ? AND MONTH(b.created_at) = ? " +
+                     "GROUP BY e.name";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, year);
+            stmt.setString(2, month);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
