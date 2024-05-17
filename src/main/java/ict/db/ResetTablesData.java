@@ -101,9 +101,9 @@ public class ResetTablesData {
 
         // 插入Deliveries表的預設資料
         String insertDeliveriesData = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) VALUES " +
-                "(1, 1, 'Main Office', 'scheduled', '2024-05-10 08:00:00')," +
-                "(1, 3, 'Main Office', 'delivered', '2024-05-10 08:00:00')," +
-                "(2, 2, 'Warehouse', 'in_transit', '2024-06-01 09:00:00');";
+                "(1, 5, 'Main Office', 'scheduled', '2024-05-10 08:00:00')," +
+                "(1, 5, 'Main Office', 'delivered', '2024-05-10 08:00:00')," +
+                "(2, 5, 'Warehouse', 'in_transit', '2024-06-01 09:00:00');";
         stmt.execute(insertDeliveriesData);
 
         System.out.println("All default data inserted successfully.");

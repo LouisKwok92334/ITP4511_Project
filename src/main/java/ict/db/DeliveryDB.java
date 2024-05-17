@@ -20,24 +20,43 @@ public class DeliveryDB {
     }
 
     public void createDelivery(int bookingId) throws SQLException {
-        String fetchBookingSQL = "SELECT user_id, delivery_location FROM Bookings WHERE booking_id = ?";
-        String insertDeliverySQL = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) "
-                + "VALUES (?, ?, ?, 'scheduled', CURRENT_TIMESTAMP)";
+        // 查询获取任意一个courier的user_id
+        String fetchCourierSQL = "SELECT user_id FROM Users WHERE role = 'courier' ORDER BY user_id LIMIT 1";
 
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement fetchBookingStmt = connection.prepareStatement(fetchBookingSQL); PreparedStatement insertDeliveryStmt = connection.prepareStatement(insertDeliverySQL)) {
+        // 查询获取特定booking的delivery_location
+        String fetchBookingSQL = "SELECT delivery_location FROM Bookings WHERE booking_id = ?";
 
+        // 插入新的Delivery记录
+        String insertDeliverySQL = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) " +
+                                   "VALUES (?, ?, ?, 'scheduled', CURRENT_TIMESTAMP)";
+
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); 
+             PreparedStatement fetchCourierStmt = connection.prepareStatement(fetchCourierSQL); 
+             PreparedStatement fetchBookingStmt = connection.prepareStatement(fetchBookingSQL); 
+             PreparedStatement insertDeliveryStmt = connection.prepareStatement(insertDeliverySQL)) {
+
+            // 获取任意一个courier的user_id
+            ResultSet courierResultSet = fetchCourierStmt.executeQuery();
+            int courierId = 0;
+            if (courierResultSet.next()) {
+                courierId = courierResultSet.getInt("user_id");
+            } else {
+                throw new SQLException("No courier available.");
+            }
+
+            // 获取特定booking的delivery_location
             fetchBookingStmt.setInt(1, bookingId);
-            ResultSet resultSet = fetchBookingStmt.executeQuery();
+            ResultSet bookingResultSet = fetchBookingStmt.executeQuery();
+            if (bookingResultSet.next()) {
+                String pickupLocation = bookingResultSet.getString("delivery_location");
 
-            if (resultSet.next()) {
-                int courierId = resultSet.getInt("user_id");
-                String pickupLocation = resultSet.getString("delivery_location");
+                // 插入新的Delivery记录
                 insertDeliveryStmt.setInt(1, bookingId);
                 insertDeliveryStmt.setInt(2, courierId);
                 insertDeliveryStmt.setString(3, pickupLocation);
                 insertDeliveryStmt.executeUpdate();
             } else {
-                System.out.println("Booking ID not found: " + bookingId); // 日志输出
+                System.out.println("Booking ID not found: " + bookingId);
                 throw new SQLException("Booking ID not found: " + bookingId);
             }
 

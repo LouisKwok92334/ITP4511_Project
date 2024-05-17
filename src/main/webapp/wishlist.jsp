@@ -25,7 +25,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Equipment ID</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Status</th>
@@ -39,7 +38,6 @@
                     for (EquipmentBean equipment : wishlist) {
                 %>
                 <tr>
-                    <td><%= equipment.getEquipmentId() %></td>
                     <td><%= equipment.getName() %></td>
                     <td><%= equipment.getDescription() %></td>
                     <td><%= equipment.getStatus() %></td>
