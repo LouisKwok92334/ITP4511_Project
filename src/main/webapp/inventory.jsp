@@ -21,12 +21,18 @@
     <body>
         <div class="header">
             <h1>Inventory Data</h1>
-            <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
+            <button onclick="window.location.href = 'damageReportReview.jsp';">Review Damage Reports</button>
             <% if ("admin".equals(userInfo.getRole())) { %>
-                <button onclick="openReportModal()">Report Damages</button>
+            <button onclick="openReportModal()">Report Damages</button>
             <% } %> <!-- Closing brace for the if statement -->
             <div id="inventory"></div>
         </div>
+
+        <!-- File Upload Form -->
+        <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
+            <input type="file" id="fileInput" name="file" accept=".xlsx,.xls" required />
+            <button type="submit">Upload</button>
+        </form>
 
         <!-- The Edit Modal -->
         <div id="editModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">

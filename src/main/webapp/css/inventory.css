@@ -7,8 +7,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : boscochuen
 */
 
+#notification {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
 button {
-    background-color: #007BFF; 
+    background-color: #007BFF;
     color: white;
     padding: 12px 24px;
     border: none;
@@ -61,7 +72,7 @@ th {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: white;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 #editEquipmentForm select:focus {
