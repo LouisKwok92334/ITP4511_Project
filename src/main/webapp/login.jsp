@@ -17,7 +17,7 @@
         <!-- Simple Header with Logo -->
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="main.jsp">
+                <a class="navbar-brand">
                     <img src="img/download.png" alt="Logo">
                 </a>
             </div>
