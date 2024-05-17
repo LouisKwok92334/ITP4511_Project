@@ -16,7 +16,7 @@
     <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="main.jsp">
+            <a class="navbar-brand" href="booking?action=listBookings">
                 <img src="img/download.png" alt="Logo"> 
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="main.jsp">Home</a>
+                        <a class="nav-link active" aria-current="page" href="booking?action=listBookings">Home</a>
                     </li>
                     <% if (!"courier".equals(userInfo.getRole())) { %>
                         <li class="nav-item">

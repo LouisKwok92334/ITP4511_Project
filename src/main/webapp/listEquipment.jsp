@@ -72,13 +72,7 @@
                         <td><%= equipment.getName() %></td>
                         <td><%= equipment.getDescription() %></td>
                         <td><%= equipment.getLocation() %></td>
-                        <td>
-                            <% if (staffOnly) { %>
-                                Yes
-                            <% } else { %>
-                                No
-                            <% } %>
-                        </td>
+                        <td><%= staffOnly ? "Yes" : "No" %></td>
                         <td>
                             <% if ("available".equals(status)) { %>
                                 <form action="" method="POST" style="display: inline;">

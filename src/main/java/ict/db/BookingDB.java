@@ -41,6 +41,31 @@ public class BookingDB {
         }
         return bookings;
     }
+    
+    public List<BookingBean> getActiveBookingsByUser(int userId) {
+        List<BookingBean> bookings = new ArrayList<>();
+        String sql = "SELECT * FROM Bookings WHERE user_id = ? AND status IN ('approved', 'pending')";
+         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                BookingBean booking = new BookingBean();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setUserId(rs.getInt("user_id"));
+                booking.setEquipmentId(rs.getInt("equipment_id"));
+                booking.setStartTime(rs.getTimestamp("start_time"));
+                booking.setEndTime(rs.getTimestamp("end_time"));
+                booking.setDeliveryLocation(rs.getString("delivery_location"));
+                booking.setStatus(rs.getString("status"));
+                booking.setCreatedAt(rs.getTimestamp("created_at"));
+                booking.setUpdatedAt(rs.getTimestamp("updated_at"));
+                bookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
 
 
     public List<BookingBean> getAllBookings() throws SQLException {
@@ -92,6 +117,8 @@ public class BookingDB {
             statement.setString(1, status);
             statement.setInt(2, bookingId);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

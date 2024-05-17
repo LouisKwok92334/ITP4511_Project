@@ -4,6 +4,7 @@ import ict.bean.BookingBean;
 import ict.bean.UserInfo;
 import ict.db.BookingDB;
 import ict.db.DeliveryDB;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -52,6 +53,9 @@ public class BookingServlet extends HttpServlet {
             case "view":
                 showBookings(request, response);
                 break;
+            case "listBookings":
+                listBookings(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
                 break;
@@ -72,6 +76,25 @@ public class BookingServlet extends HttpServlet {
             request.getRequestDispatcher("/viewBookings.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException("Unable to retrieve bookings", e);
+        }
+    }
+    
+    private void listBookings(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            HttpSession session = request.getSession();
+            UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
+            if (userInfo == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            
+            List<BookingBean> bookings = bookingDB.getActiveBookingsByUser(userInfo.getUserId());
+            request.setAttribute("bookings", bookings);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("main.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
         }
     }
 
@@ -130,7 +153,17 @@ public class BookingServlet extends HttpServlet {
 
     }
 
-    private void updateBooking(HttpServletRequest request, HttpServletResponse response) {
-        // 更新預訂的實現
-    }
+    private void updateBooking(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+            bookingDB.updateBookingStatus(bookingId, "completed");
+            response.sendRedirect("main.jsp");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred");
+        }
+}
 }
