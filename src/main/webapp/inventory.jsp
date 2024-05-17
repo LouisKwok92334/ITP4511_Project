@@ -33,15 +33,15 @@
         </div>
 
         <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <span onclick="closeUploadModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
-            <h2>Upload File</h2>
-            <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
-                <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" required />
-                <button type="submit">Upload</button>
-            </form>
+            <div class="modal-content">
+                <span onclick="closeUploadModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
+                    <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" required />
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
         </div>
-    </div>
 
 
 
@@ -52,21 +52,22 @@
                 <p>Edit Equipment</p>
                 <form id="editEquipmentForm">
                     <input type="hidden" id="editId">
-                    Name: <input type="text" id="editName" disabled><br>
-                    Description: <input type="text" id="editDescription" disabled><br>
+                    Name: <input type="text" id="editName" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
+                    Description: <input type="text" id="editDescription" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
                     Status:<br>
-                    <select id="editStatus">
+                    <select id="editStatus" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>>
                         <option value="available">Available</option>
                         <option value="unavailable">Unavailable</option>
                         <option value="maintenance">Maintenance</option>
                         <option value="reserved">Reserved</option>
                     </select><br>
-                    Location: <input type="text" id="editLocation" disabled><br>
-                    Staff Only: <input type="checkbox" id="editStaffOnly" disabled><br>
+                    Location: <input type="text" id="editLocation" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
+                    Staff Only: <input type="checkbox" id="editStaffOnly" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
                     <button type="button" onclick="submitEdit()">Save Changes</button>
                 </form>
             </div>
         </div>
+
 
         <!-- The Report Damage Modal -->
         <div id="reportModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
