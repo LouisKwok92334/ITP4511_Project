@@ -5,57 +5,13 @@
 
 var equipments = []; // Define globally
 
-document.getElementById('uploadForm').addEventListener('submit', function (event) {
-    event.preventDefault();  // Prevent the form from submitting via the browser default method
+ function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
 
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput.files.length === 0) {
-        alert('Please select a file to upload.');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-
-    fetch('UploadServlet', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(text => {
-        showNotification(text, text.includes("successfully") ? 'success' : 'error');
-    })
-    .catch(error => {
-        console.error('Error uploading file:', error);
-        showNotification('Error uploading file: ' + error.message, 'error');
-    });
-});
-
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-
-
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-
-
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
 
 function loadInventory() {
     fetch('InventoryServlet?action=listAvailableJson')

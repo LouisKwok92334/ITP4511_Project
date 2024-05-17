@@ -13,12 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/UploadServlet")
 @MultipartConfig
@@ -36,29 +38,30 @@ public class UploadServlet extends HttpServlet {
         equipmentDB = new EquipmentDB(dbUrl, dbUser, dbPassword);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Part filePart = request.getPart("file");
-        if (filePart != null) {
-            try (InputStream inputStream = filePart.getInputStream()) {
-                List<EquipmentBean> equipments = parseExcelFile(inputStream);
-                for (EquipmentBean equipment : equipments) {
-                    equipmentDB.addOrUpdateEquipment(equipment);
-                }
-                // 使用重定向到相同页面或通过Refresh header刷新当前页面
-                response.setHeader("Refresh", "0; URL=" + request.getHeader("Referer"));
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("File upload failed: " + e.getMessage());
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Part filePart = request.getPart("file");
+    if (filePart != null) {
+        try (InputStream inputStream = filePart.getInputStream()) {
+            List<EquipmentBean> equipments = parseExcelFile(inputStream);
+            for (EquipmentBean equipment : equipments) {
+                equipmentDB.addOrUpdateEquipment(equipment);
             }
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("File is missing");
+            // 使用重定向到相同页面或通过Refresh header刷新当前页面
+            response.setHeader("Refresh", "0; URL=" + request.getHeader("Referer"));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("File upload failed: " + e.getMessage());
         }
+    } else {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.getWriter().write("File is missing");
     }
+}
 
     private List<EquipmentBean> parseExcelFile(InputStream inputStream) throws IOException {
         List<EquipmentBean> equipments = new ArrayList<>();
+
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
@@ -76,6 +79,7 @@ public class UploadServlet extends HttpServlet {
                 equipments.add(equipment);
             }
         }
+
         return equipments;
     }
 
@@ -84,11 +88,16 @@ public class UploadServlet extends HttpServlet {
         if (cell == null) {
             return "";
         }
+
         switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
-                return DateUtil.isCellDateFormatted(cell) ? cell.getDateCellValue().toString() : String.valueOf(cell.getNumericCellValue());
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.valueOf(cell.getNumericCellValue());
+                }
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case FORMULA:

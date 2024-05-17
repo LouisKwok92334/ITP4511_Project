@@ -21,6 +21,10 @@
     <body>
         <div class="header">
             <h1>Inventory Data</h1>
+
+            <button onclick="openUploadModal()">Upload Data</button>
+
+
             <button onclick="window.location.href = 'damageReportReview.jsp';">Review Damage Reports</button>
             <% if ("admin".equals(userInfo.getRole())) { %>
             <button onclick="openReportModal()">Report Damages</button>
@@ -28,11 +32,18 @@
             <div id="inventory"></div>
         </div>
 
-        <!-- File Upload Form -->
-        <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
-            <input type="file" id="fileInput" name="file" accept=".xlsx,.xls" required />
-            <button type="submit">Upload</button>
-        </form>
+        <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span onclick="closeUploadModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+            <h2>Upload File</h2>
+            <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
+                <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" required />
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+
+
 
         <!-- The Edit Modal -->
         <div id="editModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
