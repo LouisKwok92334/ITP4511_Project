@@ -15,6 +15,7 @@ import ict.bean.UserInfo;
 import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import org.json.JSONObject;
 
 /**
  *
@@ -44,7 +45,8 @@ public class ProfileEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
@@ -55,11 +57,6 @@ public class ProfileEditServlet extends HttpServlet {
             return;
         }
 
-        // Retrieve and update user details
-        UserInfo currentUser = db.getUserById(sessionUserId); // Get current user details from the DB
-        request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
-
         // Code to update user details if needed
         String username = checkInput(request.getParameter("username"));
         String password = checkInput(request.getParameter("password"));
@@ -69,22 +66,35 @@ public class ProfileEditServlet extends HttpServlet {
         String phoneNumber = checkInput(request.getParameter("phoneNumber"));
         String role = checkInput(request.getParameter("role"));
 
-        UserInfo userInfo = new UserInfo( username,  password,  role,  firstName,  lastName,  email,  phoneNumber);
+        UserInfo userInfo = new UserInfo(username, password, role, firstName, lastName, email, phoneNumber);
         userInfo.setUserId(sessionUserId);
 
         try {
             boolean isUpdated = db.updateUser(userInfo);
             if (isUpdated) {
-                out.println("Record Updated Successfully");
-                System.out.println("Update successful for user: " + username);
+                // Retrieve updated user details from database
+                UserInfo updatedUser = db.getUserById(sessionUserId);
+
+                // Update session with the new user information
+                session.setAttribute("userInfo", updatedUser);
+
+                // Return the updated user information as JSON
+                JSONObject json = new JSONObject();
+                json.put("username", updatedUser.getUsername());
+                json.put("firstName", updatedUser.getFirstName());
+                json.put("lastName", updatedUser.getLastName());
+                json.put("email", updatedUser.getEmail());
+                json.put("phoneNumber", updatedUser.getPhoneNumber());
+
+                out.write(json.toString());
             } else {
-                out.println("There is a problem in updating the Record.");
-                System.out.println("Update failed for user: " + username);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.write("{\"message\":\"There was a problem updating the record.\"}");
             }
         } catch (Exception e) {
-            out.println("Error updating record: " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.write("{\"message\":\"Error updating record: " + e.getMessage() + "\"}");
             e.printStackTrace(System.out);  // Print stack trace to the console
-            System.out.println("Update exception for user: " + username + ", Error: " + e.getMessage());
         }
     }
 
