@@ -43,8 +43,6 @@
             </div>
         </div>
 
-
-
         <!-- The Edit Modal -->
         <div id="editModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
@@ -61,14 +59,20 @@
                         <option value="maintenance">Maintenance</option>
                         <option value="reserved">Reserved</option>
                     </select><br>
-                    Location: <input type="text" id="editLocation" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
+                    Location:<br>
+                    <select id="editLocation" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>>
+                        <option value="Chai Wan">Chai Wan</option>
+                        <option value="Tsing Yi">Tsing Yi</option>
+                        <option value="Sha Tin">Sha Tin</option>
+                        <option value="Tuen Mun">Tuen Mun</option>
+                        <option value="Lee Wai Lee">Lee Wai Lee</option>
+                    </select><br>
                     Staff Only: <input type="checkbox" id="editStaffOnly" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
                     <button type="button" onclick="submitEdit()">Save Changes</button>
                 </form>
             </div>
         </div>
-
-
+                    
         <!-- The Report Damage Modal -->
         <div id="reportModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">
