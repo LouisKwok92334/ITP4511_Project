@@ -66,15 +66,14 @@ public class BookingDB {
     }
 
     public int saveBooking(BookingBean booking) throws SQLException {
-        String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Bookings (user_id, equipment_id, start_time, end_time, delivery_location) "
+                + "VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, booking.getUserId());
             stmt.setInt(2, booking.getEquipmentId());
             stmt.setTimestamp(3, booking.getStartTime());
             stmt.setTimestamp(4, booking.getEndTime());
             stmt.setString(5, booking.getDeliveryLocation());
-            stmt.setString(6, booking.getStatus());
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
