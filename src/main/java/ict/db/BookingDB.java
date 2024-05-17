@@ -20,13 +20,6 @@ public class BookingDB {
         this.dbPassword = dbPassword;
     }
 
-    /**
-     * Retrieves all bookings made by a specific user.
-     *
-     * @param userId the ID of the user
-     * @return a list of BookingBean objects
-     * @throws SQLException if a database access error occurs
-     */
     public List<BookingBean> getBookingsByUserId(int userId) throws SQLException {
         List<BookingBean> bookings = new ArrayList<>();
         String sql = "SELECT b.*, e.name AS equipment_name FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id WHERE b.user_id = ?";

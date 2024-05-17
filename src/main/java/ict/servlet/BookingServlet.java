@@ -1,3 +1,5 @@
+package ict.servlet;
+
 import ict.bean.BookingBean;
 import ict.bean.UserInfo;
 import ict.db.BookingDB;
@@ -19,7 +21,7 @@ import java.util.*;
  *
  * @author user
  */
-@WebServlet("/booking")
+@WebServlet(name = "BookingServlet", urlPatterns = {"/booking"})
 public class BookingServlet extends HttpServlet {
     private BookingDB bookingDB;
     private DeliveryDB deliveryDB;
