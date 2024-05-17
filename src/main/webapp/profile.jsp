@@ -13,33 +13,13 @@
         <link href="css/profile.css" rel="stylesheet">
         <script src="js/validatePassword.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $('form').on('submit', function (event) {
-                    event.preventDefault();
-
-                    var formData = $(this).serialize();
-                    $.ajax({
-                        type: 'POST',
-                        url: 'UserServlet',
-                        data: formData,
-                        success: function (response) {
-                            alert('User updated successfully!');
-                        },
-                        error: function () {
-                            alert('Error updating user.');
-                        }
-                    });
-                });
-            });
-        </script>
     </head>
     <body>
         <jsp:useBean id="userInfo" class="ict.bean.UserInfo" scope="session"/>
         <jsp:include page="header.jsp"/>
         <div class="container">
             <h2>Update User Information</h2>
-            <form action="UserServlet" method="POST" class="needs-validation" novalidate>
+            <form id="updateUserForm" class="needs-validation" novalidate>
                 <input type="hidden" name="userId" value="${userInfo.userId}">
                 <div class="form-group">
                     <label for="username">Role</label>
@@ -68,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" class="form-control" id="email"value="${userInfo.email}" >
+                    <input type="email" name="email" class="form-control" id="email" value="${userInfo.email}">
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber">Phone Number:</label>
@@ -76,6 +56,55 @@
                 </div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">Update User</button>
             </form>
+            <div id="updateMessage" class="mt-3"></div>
         </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#updateUserForm').on('submit', function (event) {
+                    event.preventDefault(); // Prevent the form from submitting the default way
+
+                    // Validate password and confirm_password match
+                    var password = $('#password').val();
+                    var confirm_password = $('#confirm_password').val();
+                    if (password !== confirm_password) {
+                        $('#passwordMessage').text('Passwords do not match.');
+                        return;
+                    } else {
+                        $('#passwordMessage').text('');
+                    }
+
+                    var formData = $(this).serialize(); // Serialize form data
+
+                    $.ajax({
+                        url: 'UserServlet',
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+                            // Assume response contains the updated user info in JSON format
+                            console.log(response); // Add this line to debug the response
+                            var userInfo = JSON.parse(response);
+
+                            // Update form fields with new values
+                            $('#username').val(userInfo.username);
+                            $('#firstName').val(userInfo.firstName);
+                            $('#lastName').val(userInfo.lastName);
+                            $('#email').val(userInfo.email);
+                            $('#phoneNumber').val(userInfo.phoneNumber);
+
+                            // Display a success message
+                            $('#updateMessage').html('<div class="alert alert-success">User information updated successfully.</div>');
+
+                            // Show a success alert
+                            alert('User information updated successfully.');
+                        },
+                        error: function (xhr, status, error) {
+                            // Display an error message
+                            $('#updateMessage').html('<div class="alert alert-danger">An error occurred while updating user information. Please try again.</div>');
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
