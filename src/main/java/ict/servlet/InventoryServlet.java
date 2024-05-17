@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package ict.servlet;
 
 import ict.bean.EquipmentBean;
@@ -76,6 +75,8 @@ public class InventoryServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("update".equals(action)) {
             updateEquipment(request, response);
+        } else if ("upload".equals(action)) {
+            request.getRequestDispatcher("/UploadServlet").forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
         }
@@ -90,8 +91,8 @@ public class InventoryServlet extends HttpServlet {
             }
             JsonObject json = Json.createReader(new StringReader(sb.toString())).readObject();
 
-            int equipmentId = json.getInt("equipmentId"); 
-            String name = json.getString("name"); 
+            int equipmentId = json.getInt("equipmentId");
+            String name = json.getString("name");
             String description = json.getString("description");
             String status = json.getString("status");
             String location = json.getString("location");

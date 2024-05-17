@@ -21,11 +21,26 @@
     <body>
         <div class="header">
             <h1>Inventory Data</h1>
-            <button onclick="window.location.href='damageReportReview.jsp';">Review Damage Reports</button>
+
+            <button onclick="openUploadModal()">Upload Data</button>
+
+
+            <button onclick="window.location.href = 'damageReportReview.jsp';">Review Damage Reports</button>
             <% if ("admin".equals(userInfo.getRole())) { %>
-                <button onclick="openReportModal()">Report Damages</button>
+            <button onclick="openReportModal()">Report Damages</button>
             <% } %> <!-- Closing brace for the if statement -->
             <div id="inventory"></div>
+        </div>
+
+        <div id="uploadModal" class="modal">
+            <div class="modal-content">
+                <span onclick="closeUploadModal()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data" method="post" action="UploadServlet">
+                    <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" required />
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
         </div>
 
         <!-- The Edit Modal -->
@@ -35,22 +50,29 @@
                 <p>Edit Equipment</p>
                 <form id="editEquipmentForm">
                     <input type="hidden" id="editId">
-                    Name: <input type="text" id="editName" disabled><br>
-                    Description: <input type="text" id="editDescription" disabled><br>
+                    Name: <input type="text" id="editName" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
+                    Description: <input type="text" id="editDescription" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
                     Status:<br>
-                    <select id="editStatus">
+                    <select id="editStatus" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>>
                         <option value="available">Available</option>
                         <option value="unavailable">Unavailable</option>
                         <option value="maintenance">Maintenance</option>
                         <option value="reserved">Reserved</option>
                     </select><br>
-                    Location: <input type="text" id="editLocation" disabled><br>
-                    Staff Only: <input type="checkbox" id="editStaffOnly" disabled><br>
+                    Location:<br>
+                    <select id="editLocation" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>>
+                        <option value="Chai Wan">Chai Wan</option>
+                        <option value="Tsing Yi">Tsing Yi</option>
+                        <option value="Sha Tin">Sha Tin</option>
+                        <option value="Tuen Mun">Tuen Mun</option>
+                        <option value="Lee Wai Lee">Lee Wai Lee</option>
+                    </select><br>
+                    Staff Only: <input type="checkbox" id="editStaffOnly" <%= ("admin".equals(userInfo.getRole())) ? "" : "disabled" %>><br>
                     <button type="button" onclick="submitEdit()">Save Changes</button>
                 </form>
             </div>
         </div>
-
+                    
         <!-- The Report Damage Modal -->
         <div id="reportModal" style="display:none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);">
             <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 50%;">

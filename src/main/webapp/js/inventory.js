@@ -5,6 +5,14 @@
 
 var equipments = []; // Define globally
 
+ function openUploadModal() {
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+
 function loadInventory() {
     fetch('InventoryServlet?action=listAvailableJson')
             .then(response => {
@@ -49,7 +57,7 @@ document.addEventListener("DOMContentLoaded", loadInventory);
 const inventory = document.getElementById('inventory');
 
 function editEquipment(equipmentId) {
-     console.log("Edit button clicked for equipment ID:", equipmentId); // Check if this logs when you click the button
+    console.log("Edit button clicked for equipment ID:", equipmentId); // Check if this logs when you click the button
     const equipment = equipments.find(eq => eq.equipmentId === equipmentId);
     if (equipment) {
         const modal = document.getElementById('editModal');
@@ -86,21 +94,21 @@ function submitEdit() {
         },
         body: JSON.stringify(equipment)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Update successful, updating table...');
-            updateTableEntry(equipment); // 更新表格中的数据显示
-            closeModal(); // 关闭模态框
-        } else {
-            console.error('Update failed:', data.message);
-            alert('Update failed: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Network or server error:', error);
-        alert('Error communicating with the server. Please try again later.');
-    });
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Update successful, updating table...');
+                    updateTableEntry(equipment); // 更新表格中的数据显示
+                    closeModal(); // 关闭模态框
+                } else {
+                    console.error('Update failed:', data.message);
+                    alert('Update failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Network or server error:', error);
+                alert('Error communicating with the server. Please try again later.');
+            });
 }
 
 function updateTableEntry(updatedEquipment) {
@@ -121,7 +129,7 @@ function updateTableEntry(updatedEquipment) {
 function handleResponse(response) {
     if (response.status === 'success') {
         console.log('Update successful!');
-        
+
     } else {
         console.error('Update failed:', response.message);
 
