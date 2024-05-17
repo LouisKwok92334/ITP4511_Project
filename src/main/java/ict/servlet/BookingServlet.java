@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date; 
+import java.util.Date;
 import java.util.*;
 
 /**
@@ -23,6 +23,7 @@ import java.util.*;
  */
 @WebServlet(name = "BookingServlet", urlPatterns = {"/booking"})
 public class BookingServlet extends HttpServlet {
+
     private BookingDB bookingDB;
     private DeliveryDB deliveryDB;
 
@@ -56,7 +57,7 @@ public class BookingServlet extends HttpServlet {
                 break;
         }
     }
-    
+
     private void showBookings(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserInfo userInfo = (UserInfo) session.getAttribute("userInfo");
@@ -73,7 +74,7 @@ public class BookingServlet extends HttpServlet {
             throw new ServletException("Unable to retrieve bookings", e);
         }
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -90,7 +91,7 @@ public class BookingServlet extends HttpServlet {
                 break;
         }
     }
-    
+
     private void createBooking(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.parseInt(request.getParameter("user_id"));
         int equipmentId = Integer.parseInt(request.getParameter("equipment_id"));
@@ -111,22 +112,24 @@ public class BookingServlet extends HttpServlet {
             booking.setStartTime(startTime);
             booking.setEndTime(endTime);
             booking.setDeliveryLocation(deliveryLocation);
+            booking.setStatus("pending");  // Set status as pending initially or based on some business logic
 
             int bookingId = bookingDB.saveBooking(booking);
 
-            // Create a delivery entry for the new booking
+            // Create a delivery entry for the new booking if the status is pending
             if ("pending".equals(booking.getStatus())) {
                 deliveryDB.createDelivery(bookingId);
             }
 
-            response.sendRedirect("equipment?action=listAvailable"); 
+            response.sendRedirect("equipment?action=listAvailable"); // Adjust the redirection URL as necessary
         } catch (ParseException e) {
             throw new ServletException("Unable to parse date format", e);
         } catch (SQLException e) {
-            throw new ServletException("Unable to save booking", e);
+            throw new ServletException("Unable to save booking or create delivery", e);
         }
+
     }
-    
+
     private void updateBooking(HttpServletRequest request, HttpServletResponse response) {
         // 更新預訂的實現
     }

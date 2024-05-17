@@ -30,37 +30,46 @@ public class DeliveryDB {
             ResultSet resultSet = fetchBookingStmt.executeQuery();
 
             if (resultSet.next()) {
-                int courierId = resultSet.getInt("user_id"); // Assuming the user is also the courier for now
+                int courierId = resultSet.getInt("user_id");
                 String pickupLocation = resultSet.getString("delivery_location");
-
                 insertDeliveryStmt.setInt(1, bookingId);
                 insertDeliveryStmt.setInt(2, courierId);
                 insertDeliveryStmt.setString(3, pickupLocation);
                 insertDeliveryStmt.executeUpdate();
+            } else {
+                System.out.println("Booking ID not found: " + bookingId); // 日志输出
+                throw new SQLException("Booking ID not found: " + bookingId);
             }
+
         }
     }
 
     public DeliveryBean getDeliveryByBookingId(int bookingId) throws SQLException {
         DeliveryBean delivery = null;
-        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Deliveries WHERE booking_id = ?")) {
+        String sql = "SELECT * FROM Deliveries WHERE booking_id = ?";
+        try (Connection conn = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, bookingId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    delivery = new DeliveryBean();
-                    delivery.setDeliveryId(rs.getInt("delivery_id"));
-                    delivery.setCourierId(rs.getInt("courier_id"));
-                    delivery.setPickupLocation(rs.getString("pickup_location"));
-                    delivery.setStatus(rs.getString("status"));
-                }
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                delivery = new DeliveryBean();
+                delivery.setDeliveryId(rs.getInt("delivery_id"));
+                delivery.setCourierId(rs.getInt("courier_id"));
+                delivery.setPickupLocation(rs.getString("pickup_location"));
+                delivery.setStatus(rs.getString("status"));
+                // Consider adding other fields here as well.
+            } else {
+                throw new SQLException("No delivery found for booking ID: " + bookingId);
             }
         }
         return delivery;
     }
 
     public void updateDeliveryStatus(int deliveryId, String status) throws SQLException {
-        String sql = "UPDATE Deliveries SET status = ? WHERE delivery_id = ?";
+        String sql = "UPDATE Deliveries SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE delivery_id = ?";
         try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, status);
             statement.setInt(2, deliveryId);
             statement.executeUpdate();
