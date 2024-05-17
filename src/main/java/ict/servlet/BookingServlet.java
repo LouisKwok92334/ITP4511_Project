@@ -1,7 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package ict.servlet;
+
 import ict.bean.BookingBean;
 import ict.bean.UserInfo;
 import ict.db.BookingDB;
-import ict.db.DeliveryDB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,7 +27,6 @@ import java.util.*;
 @WebServlet("/booking")
 public class BookingServlet extends HttpServlet {
     private BookingDB bookingDB;
-    private DeliveryDB deliveryDB;
 
     @Override
     public void init() throws ServletException {
@@ -38,7 +42,6 @@ public class BookingServlet extends HttpServlet {
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
         bookingDB = new BookingDB(dbUrl, dbUser, dbPassword);
-        deliveryDB = new DeliveryDB(dbUrl, dbUser, dbPassword);
     }
 
     @Override
@@ -110,13 +113,7 @@ public class BookingServlet extends HttpServlet {
             booking.setEndTime(endTime);
             booking.setDeliveryLocation(deliveryLocation);
 
-            int bookingId = bookingDB.saveBooking(booking);
-
-            // Create a delivery entry for the new booking
-            if ("pending".equals(booking.getStatus())) {
-                deliveryDB.createDelivery(bookingId);
-            }
-
+            bookingDB.saveBooking(booking);
             response.sendRedirect("equipment?action=listAvailable"); 
         } catch (ParseException e) {
             throw new ServletException("Unable to parse date format", e);

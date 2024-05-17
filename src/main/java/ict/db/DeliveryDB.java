@@ -18,28 +18,6 @@ public class DeliveryDB {
         this.dbPassword = dbPassword;
     }
 
-    public void createDelivery(int bookingId) throws SQLException {
-        String fetchBookingSQL = "SELECT user_id, delivery_location FROM Bookings WHERE booking_id = ?";
-        String insertDeliverySQL = "INSERT INTO Deliveries (booking_id, courier_id, pickup_location, status, scheduled_time) "
-                + "VALUES (?, ?, ?, 'scheduled', CURRENT_TIMESTAMP)";
-
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement fetchBookingStmt = connection.prepareStatement(fetchBookingSQL); PreparedStatement insertDeliveryStmt = connection.prepareStatement(insertDeliverySQL)) {
-
-            fetchBookingStmt.setInt(1, bookingId);
-            ResultSet resultSet = fetchBookingStmt.executeQuery();
-
-            if (resultSet.next()) {
-                int courierId = resultSet.getInt("user_id"); // Assuming the user is also the courier for now
-                String pickupLocation = resultSet.getString("delivery_location");
-
-                insertDeliveryStmt.setInt(1, bookingId);
-                insertDeliveryStmt.setInt(2, courierId);
-                insertDeliveryStmt.setString(3, pickupLocation);
-                insertDeliveryStmt.executeUpdate();
-            }
-        }
-    }
-
     public DeliveryBean getDeliveryByBookingId(int bookingId) throws SQLException {
         String sql = "SELECT * FROM Deliveries WHERE booking_id = ?";
         DeliveryBean delivery = null;
