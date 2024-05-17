@@ -58,12 +58,7 @@ public class ResetTablesData {
                 "('staff1', 'abc17823', 'staff', 'Jane', 'Smith', 'jane.smith@example.com', '9876543210')," +
                 "('tech1', 'abc17823', 'technician', 'Tom', 'Taylor', 'tom.taylor@example.com', '1234512345')," +
                 "('admin1', 'abc17823', 'admin', 'Alice', 'Anderson', 'alice.anderson@example.com', '9876598765')," +
-                "('courier1', 'abc17823', 'courier', 'Charlie', 'Chaplin', 'charlie.chaplin@example.com', '1357913579')," +
-                "('user2', 'password', 'user', 'David', 'Williams', 'david.williams@example.com', '2223334444')," +
-                "('staff2', 'password', 'staff', 'Laura', 'Johnson', 'laura.johnson@example.com', '3334445555')," +
-                "('tech2', 'password', 'technician', 'Robert', 'Brown', 'robert.brown@example.com', '4445556666')," +
-                "('admin2', 'password', 'admin', 'Linda', 'Davis', 'linda.davis@example.com', '5556667777')," +
-                "('courier2', 'password', 'courier', 'Brian', 'Miller', 'brian.miller@example.com', '6667778888');";
+                "('courier1', 'abc17823', 'courier', 'Charlie', 'Chaplin', 'charlie.chaplin@example.com', '1357913579');";
         stmt.execute(insertUsersData);
 
         // 插入Equipment表的預設資料
@@ -91,12 +86,12 @@ public class ResetTablesData {
                 "(2, 2, '2022-06-01 10:00:00', '2022-06-03 20:00:00', 'approved', 'Lee Wai Lee')," +
                 "(3, 3, '2022-07-01 08:00:00', '2022-07-03 17:00:00', 'completed', 'Chai Wan')," +
                 "(4, 4, '2022-08-01 09:30:00', '2022-08-02 18:30:00', 'denied', 'Tuen Mun')," +
-                "(5, 6, '2022-09-01 10:15:00', '2022-09-04 19:00:00', 'approved', 'Tsing Yi')," +
-                "(6, 6, '2022-10-01 11:00:00', '2022-10-05 20:00:00', 'completed', 'Sha Tin')," +
-                "(7, 7, '2022-11-01 12:00:00', '2022-11-05 21:00:00', 'pending', 'Lee Wai Lee')," +
-                "(8, 10, '2022-12-01 13:00:00', '2022-12-06 22:00:00', 'approved', 'Sha Tin')," +
-                "(9, 9, '2023-05-01 14:00:00', '2023-05-07 23:00:00', 'completed', 'Tuen Mun')," +
-                "(10, 10, '2023-06-01 15:00:00', '2023-06-08 23:59:00', 'denied', 'Tsing Yi');";
+                "(3, 6, '2022-09-01 10:15:00', '2022-09-04 19:00:00', 'approved', 'Tsing Yi')," +
+                "(2, 6, '2022-10-01 11:00:00', '2022-10-05 20:00:00', 'completed', 'Sha Tin')," +
+                "(1, 7, '2022-11-01 12:00:00', '2022-11-05 21:00:00', 'pending', 'Lee Wai Lee')," +
+                "(4, 10, '2022-12-01 13:00:00', '2022-12-06 22:00:00', 'approved', 'Sha Tin')," +
+                "(1, 9, '2023-05-01 14:00:00', '2023-05-07 23:00:00', 'completed', 'Tuen Mun')," +
+                "(2, 10, '2023-06-01 15:00:00', '2023-06-08 23:59:00', 'denied', 'Tsing Yi');";
         stmt.execute(insertBookingsData);
 
         // 插入DamageReports表的預設資料
@@ -105,12 +100,12 @@ public class ResetTablesData {
                 "(2, 2, 'The lens needs cleaning', 'reviewed')," +
                 "(3, 3, 'Broken screen', 'resolved')," +
                 "(4, 4, 'Malfunctioning buttons', 'reported')," +
-                "(5, 5, 'Loose cable', 'reviewed')," +
-                "(6, 6, 'Battery issues', 'resolved')," +
-                "(7, 7, 'Overheating', 'reported')," +
-                "(8, 8, 'Cracked case', 'reviewed')," +
-                "(9, 9, 'Software problems', 'resolved')," +
-                "(10, 10, 'Unresponsive touchscreen', 'reported');";
+                "(5, 2, 'Loose cable', 'reviewed')," +
+                "(6, 4, 'Battery issues', 'resolved')," +
+                "(7, 3, 'Overheating', 'reported')," +
+                "(8, 1, 'Cracked case', 'reviewed')," +
+                "(9, 2, 'Software problems', 'resolved')," +
+                "(10, 4, 'Unresponsive touchscreen', 'reported');";
         stmt.execute(insertDamageReportsData);
 
         // 插入WishList表的預設資料
@@ -119,12 +114,12 @@ public class ResetTablesData {
                 "(2, 1, '2023-04-26 16:00:00')," +
                 "(3, 3, '2023-04-27 17:00:00')," +
                 "(4, 4, '2023-04-28 18:00:00')," +
-                "(5, 5, '2023-04-29 19:00:00')," +
-                "(6, 6, '2023-04-30 20:00:00')," +
-                "(7, 7, '2023-05-01 21:00:00')," +
-                "(8, 8, '2023-05-02 22:00:00')," +
-                "(9, 9, '2023-05-03 23:00:00')," +
-                "(10, 10, '2023-05-04 23:59:00');";
+                "(2, 5, '2023-04-29 19:00:00')," +
+                "(4, 6, '2023-04-30 20:00:00')," +
+                "(1, 6, '2023-05-01 21:00:00')," +
+                "(2, 8, '2023-05-02 22:00:00')," +
+                "(3, 9, '2023-05-03 23:00:00')," +
+                "(2, 10, '2023-05-04 23:59:00');";
         stmt.execute(insertWishListData);
 
         // 插入Deliveries表的預設資料

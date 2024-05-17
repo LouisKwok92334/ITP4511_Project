@@ -28,7 +28,6 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Booking ID</th>
                     <th>Equipment Name</th>
                     <th>Start Time</th>
                     <th>End Time</th>
@@ -38,7 +37,6 @@
             <tbody>
                 <% for (BookingBean booking : bookings) { %>
                 <tr>
-                    <td><%= booking.getBookingId() %></td>
                     <td><%= booking.getEquipmentName() %></td>
                     <td><%= booking.getStartTime() %></td>
                     <td><%= booking.getEndTime() %></td>

@@ -29,8 +29,10 @@
             <input type="hidden" id="deliveryId">
             <p>Booking Status:</p>
             <select id="bookingStatus">
-                <option value="approved">Approve</option>
-                <option value="denied">Deny</option>
+                <option value="pending">pending</option>
+                <option value="approved">approved</option>
+                <option value="denied">denied</option>
+                <option value="completed">completed</option>
             </select>
             <p>Courier ID: <span id="courierId"></span></p>
             <p>Pickup Location: <span id="pickupLocation"></span></p>
