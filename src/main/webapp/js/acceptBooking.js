@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     fetchBookings();
 
     function fetchBookings() {
@@ -6,31 +6,31 @@ $(document).ready(function () {
             url: 'AcceptBookingServlet',
             type: 'GET',
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 let tableContent = '<tr><th>Booking ID</th><th>User ID</th><th>Equipment Name</th><th>Start Time</th><th>End Time</th><th>Delivery Location</th><th>Status</th><th>Actions</th></tr>';
-                $.each(data, function (index, booking) {
+                $.each(data, function(index, booking) {
                     tableContent += '<tr>' +
-                            '<td>' + booking.bookingId + '</td>' +
-                            '<td>' + booking.userId + '</td>' +
-                            '<td>' + booking.equipmentName + '</td>' +
-                            '<td>' + booking.startTime + '</td>' +
-                            '<td>' + booking.endTime + '</td>' +
-                            '<td>' + booking.deliveryLocation + '</td>' +
-                            '<td>' + booking.status + '</td>' +
-                            '<td><button class="editBtn" data-id="' + booking.bookingId + '">Edit</button></td>' +
-                            '</tr>';
+                        '<td>' + booking.bookingId + '</td>' +
+                        '<td>' + booking.userId + '</td>' +
+                        '<td>' + booking.equipmentName + '</td>' +
+                        '<td>' + booking.startTime + '</td>' +
+                        '<td>' + booking.endTime + '</td>' +
+                        '<td>' + booking.deliveryLocation + '</td>' +
+                        '<td>' + booking.status + '</td>' +
+                        '<td><button class="editBtn" data-id="' + booking.bookingId + '">Edit</button></td>' +
+                        '</tr>';
                 });
                 $('#bookingTable').html(tableContent);
                 bindEditButtons();
             },
-            error: function () {
+            error: function() {
                 alert('Failed to fetch bookings');
             }
         });
     }
 
     function bindEditButtons() {
-        $('.editBtn').on('click', function () {
+        $('.editBtn').on('click', function() {
             let bookingId = $(this).data('id');
             $('#bookingId').val(bookingId);
             fetchDeliveryDetails(bookingId);
@@ -41,22 +41,22 @@ $(document).ready(function () {
         $.ajax({
             url: 'DeliveryDetailsServlet',
             type: 'GET',
-            data: {bookingId: bookingId},
+            data: { bookingId: bookingId },
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 $('#deliveryId').val(data.deliveryId);
                 $('#courierId').text(data.courierId);
                 $('#pickupLocation').text(data.pickupLocation);
                 $('#deliveryStatus').val(data.status);
                 $('#editModal').show();
             },
-            error: function () {
+            error: function() {
                 alert('Failed to fetch delivery details');
             }
         });
     }
 
-    $('#updateStatusBtn').on('click', function () {
+    $('#updateStatusBtn').on('click', function() {
         let bookingId = $('#bookingId').val();
         let deliveryId = $('#deliveryId').val();
         let bookingStatus = $('#bookingStatus').val();
@@ -70,18 +70,18 @@ $(document).ready(function () {
                 bookingStatus: bookingStatus,
                 deliveryStatus: deliveryStatus
             },
-            success: function () {
+            success: function() {
                 alert('Statuses updated successfully');
                 $('#editModal').hide();
                 fetchBookings();
             },
-            error: function () {
+            error: function() {
                 alert('Failed to update statuses');
             }
         });
     });
 
-    $('#closeModalBtn').on('click', function () {
+    $('#closeModalBtn').on('click', function() {
         $('#editModal').hide();
     });
 });

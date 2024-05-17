@@ -44,7 +44,7 @@
                     <% } %>
                     <% if ("admin".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="checkOutStatistic.jsp">Check-out Statistic</a>
+                            <a class="nav-link" href="#">Check-out Statistic</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="createAccount.jsp">Manage Account</a>
