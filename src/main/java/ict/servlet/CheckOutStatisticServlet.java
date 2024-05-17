@@ -29,11 +29,15 @@ public class CheckOutStatisticServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        String year = request.getParameter("year");
         List<CheckoutStatistic> statistics = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD); PreparedStatement stmt = conn.prepareStatement(
                 "SELECT e.name AS equipment_name, COUNT(b.booking_id) AS checkouts "
-                + "FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id GROUP BY e.name")) {
+                + "FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id "
+                + "WHERE YEAR(b.created_at) = ? "
+                + "GROUP BY e.name")) {
+            stmt.setString(1, year);
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -49,6 +53,4 @@ public class CheckOutStatisticServlet extends HttpServlet {
         out.print(new Gson().toJson(statistics));
         out.flush();
     }
-
-    // Inner class moved to separate file
 }

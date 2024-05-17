@@ -22,17 +22,19 @@ public class LocationStatisticServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String sql = "SELECT delivery_location, COUNT(*) as booking_count FROM Bookings GROUP BY delivery_location;";
+        String year = request.getParameter("year");
+        String sql = "SELECT delivery_location, COUNT(*) as booking_count FROM Bookings WHERE YEAR(created_at) = ? GROUP BY delivery_location;";
         List<LocationStats> stats = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASSWORD); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, year);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String location = rs.getString("delivery_location");
                 int count = rs.getInt("booking_count");
                 stats.add(new LocationStats(location, count));
             }
             String json = new Gson().toJson(stats);
-            System.out.println("JSON Output: " + json); // Add this line to log the output
             response.getWriter().write(json);
 
         } catch (SQLException e) {
