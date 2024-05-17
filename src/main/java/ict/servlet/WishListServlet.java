@@ -4,6 +4,7 @@
  */
 package ict.servlet;
 
+import ict.bean.EquipmentBean;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -40,6 +42,31 @@ public class WishListServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        switch (action) {
+            case "toggle":
+                handleToggleWishList(request, response);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        switch (action) {
+            case "view":
+                handleViewWishList(request, response);
+                break;
+            case "show":
+                handleShowWishList(request, response);
+            break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
+        }
+    }
+
+    private void handleToggleWishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); 
         if (session == null || session.getAttribute("userId") == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
@@ -55,7 +82,7 @@ public class WishListServlet extends HttpServlet {
         response.getWriter().write("{\"added\": " + added + "}");
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void handleViewWishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
@@ -80,5 +107,24 @@ public class WishListServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(jsonBuilder.toString());
+    }
+    
+    private void handleShowWishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is not logged in.");
+            return;
+        }
+        
+        int userId = (Integer) session.getAttribute("userId");
+
+        try {
+            List<EquipmentBean> wishlistItems = wishListDB.getWishlistByUserId(userId);
+            request.setAttribute("wishlistItems", wishlistItems);
+            request.getRequestDispatcher("/wishlist.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to retrieve wishlist.");
+        }
     }
 }

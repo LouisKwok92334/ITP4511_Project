@@ -30,9 +30,9 @@
                   </div>
                   <div class="col-md-3 text-right">
                       <button type="button" class="btn btn-info" onclick="location.href='booking?action=view'">View Booking Records</button>
-
+                      <button type="button" class="btn btn-primary" onclick="location.href='WishListServlet?action=show'">View Favorites</button>
                   </div>
-              </div>
+                </div>
             <!-- Search Bar -->
             <input type="text" id="searchBar" onkeyup="searchEquipment()" placeholder="Search for equipment..." class="form-control mb-4">
 
@@ -131,8 +131,11 @@
                             <div class="form-group">
                                 <label>Delivery Location</label>
                                 <select class="form-control" name="delivery_location">
-                                    <option value="LWL">LWL</option>
-                                    <option value="ST">ST</option>
+                                    <option value="Lee Wai Lee">Lee Wai Lee</option>
+                                    <option value="Chai Wan">Chai Wan</option>
+                                    <option value="Sha Tin">Sha Tin</option>
+                                    <option value="Tuen Mun">Tuen Mun</option>
+                                    <option value="Tsing Yi">Tsing Yi</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
