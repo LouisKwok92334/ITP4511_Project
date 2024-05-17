@@ -5,6 +5,58 @@
 
 var equipments = []; // Define globally
 
+document.getElementById('uploadForm').addEventListener('submit', function (event) {
+    event.preventDefault();  // Prevent the form from submitting via the browser default method
+
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length === 0) {
+        alert('Please select a file to upload.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    fetch('UploadServlet', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(text => {
+        showNotification(text, text.includes("successfully") ? 'success' : 'error');
+    })
+    .catch(error => {
+        console.error('Error uploading file:', error);
+        showNotification('Error uploading file: ' + error.message, 'error');
+    });
+});
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+
+
 function loadInventory() {
     fetch('InventoryServlet?action=listAvailableJson')
             .then(response => {
@@ -49,7 +101,7 @@ document.addEventListener("DOMContentLoaded", loadInventory);
 const inventory = document.getElementById('inventory');
 
 function editEquipment(equipmentId) {
-     console.log("Edit button clicked for equipment ID:", equipmentId); // Check if this logs when you click the button
+    console.log("Edit button clicked for equipment ID:", equipmentId); // Check if this logs when you click the button
     const equipment = equipments.find(eq => eq.equipmentId === equipmentId);
     if (equipment) {
         const modal = document.getElementById('editModal');
@@ -86,21 +138,21 @@ function submitEdit() {
         },
         body: JSON.stringify(equipment)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Update successful, updating table...');
-            updateTableEntry(equipment); // 更新表格中的数据显示
-            closeModal(); // 关闭模态框
-        } else {
-            console.error('Update failed:', data.message);
-            alert('Update failed: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Network or server error:', error);
-        alert('Error communicating with the server. Please try again later.');
-    });
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Update successful, updating table...');
+                    updateTableEntry(equipment); // 更新表格中的数据显示
+                    closeModal(); // 关闭模态框
+                } else {
+                    console.error('Update failed:', data.message);
+                    alert('Update failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Network or server error:', error);
+                alert('Error communicating with the server. Please try again later.');
+            });
 }
 
 function updateTableEntry(updatedEquipment) {
@@ -121,7 +173,7 @@ function updateTableEntry(updatedEquipment) {
 function handleResponse(response) {
     if (response.status === 'success') {
         console.log('Update successful!');
-        
+
     } else {
         console.error('Update failed:', response.message);
 

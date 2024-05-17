@@ -7,15 +7,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : boscochuen
 */
 
-#notification {
-    display: none;
+.notification {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #4CAF50;
+    padding: 10px 20px;
+    background-color: #44c767; /* Green for success */
     color: white;
-    padding: 15px;
     border-radius: 5px;
+    z-index: 1000;
+    opacity: 0.9;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.notification.error {
+    background-color: #e74c3c; /* Red for error */
 }
 
 button {

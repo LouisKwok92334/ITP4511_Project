@@ -13,14 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @WebServlet("/UploadServlet")
 @MultipartConfig
@@ -47,22 +45,20 @@ public class UploadServlet extends HttpServlet {
                 for (EquipmentBean equipment : equipments) {
                     equipmentDB.addOrUpdateEquipment(equipment);
                 }
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write("{\"status\":\"success\"}");
+                // 使用重定向到相同页面或通过Refresh header刷新当前页面
+                response.setHeader("Refresh", "0; URL=" + request.getHeader("Referer"));
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.getWriter().write("{\"status\":\"error\",\"message\":\"" + e.getMessage() + "\"}");
+                response.getWriter().write("File upload failed: " + e.getMessage());
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("{\"status\":\"error\",\"message\":\"File is missing\"}");
+            response.getWriter().write("File is missing");
         }
     }
 
     private List<EquipmentBean> parseExcelFile(InputStream inputStream) throws IOException {
         List<EquipmentBean> equipments = new ArrayList<>();
-
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
@@ -80,7 +76,6 @@ public class UploadServlet extends HttpServlet {
                 equipments.add(equipment);
             }
         }
-
         return equipments;
     }
 
@@ -89,16 +84,11 @@ public class UploadServlet extends HttpServlet {
         if (cell == null) {
             return "";
         }
-
         switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    return cell.getDateCellValue().toString();
-                } else {
-                    return String.valueOf(cell.getNumericCellValue());
-                }
+                return DateUtil.isCellDateFormatted(cell) ? cell.getDateCellValue().toString() : String.valueOf(cell.getNumericCellValue());
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case FORMULA:
