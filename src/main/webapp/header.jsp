@@ -53,7 +53,7 @@
                     <% } %>
                     <% if ("courier".equals(userInfo.getRole())) { %>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">My Task</a>
+                            <a class="nav-link" href="deliveries.jsp">My Task</a>
                         </li>
                     <% } %>
                     <li class="nav-item">

@@ -17,7 +17,7 @@
         <!-- Simple Header with Logo -->
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="main.jsp">
+                <a class="navbar-brand">
                     <img src="img/download.png" alt="Logo">
                 </a>
             </div>
@@ -29,7 +29,7 @@
                 <input type="hidden" name="action" value="authenticate"/>
                 <div class="mb-3">
                     <label for="username" class="form-label">Login</label>
-                    <input type="text" class="form-control" name="username" maxLength="10" id="username" value="user1">
+                    <input type="text" class="form-control" name="username" maxLength="10" id="username" value="courier1">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
