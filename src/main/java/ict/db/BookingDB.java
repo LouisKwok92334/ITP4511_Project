@@ -113,12 +113,11 @@ public class BookingDB {
 
     public void updateBookingStatus(int bookingId, String status) throws SQLException {
         String sql = "UPDATE Bookings SET status = ? WHERE booking_id = ?";
-        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, status);
             statement.setInt(2, bookingId);
             statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

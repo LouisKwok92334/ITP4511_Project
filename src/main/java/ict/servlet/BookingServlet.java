@@ -1,5 +1,6 @@
 package ict.servlet;
 
+import com.google.gson.Gson;
 import ict.bean.BookingBean;
 import ict.bean.UserInfo;
 import ict.db.BookingDB;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,11 +89,26 @@ public class BookingServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            
+
             List<BookingBean> bookings = bookingDB.getActiveBookingsByUser(userInfo.getUserId());
-            request.setAttribute("bookings", bookings);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("main.jsp");
-            dispatcher.forward(request, response);
+            
+            // Convert bookings list to JSON
+            Gson gson = new Gson();
+            String jsonBookings = gson.toJson(bookings);
+
+            // Prepare the JSON response
+            Map<String, Object> jsonResponse = new HashMap<>();
+            jsonResponse.put("success", true);
+            jsonResponse.put("bookings", bookings);
+
+            String jsonResponseString = gson.toJson(jsonResponse);
+
+            // Send JSON response
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
+            out.write(jsonResponseString);
+            out.flush();
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred while processing your request.");
@@ -108,6 +125,9 @@ public class BookingServlet extends HttpServlet {
                 break;
             case "update":
                 updateBooking(request, response);
+                break;
+            case "cancel":
+                cancelBooking(request, response);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
@@ -154,16 +174,40 @@ public class BookingServlet extends HttpServlet {
     }
 
     private void updateBooking(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            int bookingId = Integer.parseInt(request.getParameter("bookingId"));
-            bookingDB.updateBookingStatus(bookingId, "completed");
-            response.sendRedirect("main.jsp");
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid booking ID");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred");
+        response.setContentType("application/json");
+        try (PrintWriter out = response.getWriter()) {
+            try {
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                bookingDB.updateBookingStatus(bookingId, "completed");
+                out.print("{\"success\": true}");
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"success\": false, \"error\": \"Invalid booking ID\"}");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"success\": false, \"error\": \"Database error occurred\"}");
+            }
         }
-}
+    }
+
+    private void cancelBooking(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        try (PrintWriter out = response.getWriter()) {
+            try {
+                int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+                bookingDB.updateBookingStatus(bookingId, "denied");
+                out.print("{\"success\": true}");
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"success\": false, \"error\": \"Invalid booking ID\"}");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                out.print("{\"success\": false, \"error\": \"Database error occurred\"}");
+            }
+        }
+    }
 }
