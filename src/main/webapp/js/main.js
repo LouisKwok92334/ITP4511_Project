@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (bookings.length === 0) {
             // No bookings found
-            bookingsContainer.innerHTML = '<div class="alert alert-warning" role="alert">没有找到任何预订信息。</div>';
+            bookingsContainer.innerHTML = '<div class="alert alert-warning" role="alert">You do not have any record.</div>';
             return;
         }
 
@@ -52,12 +52,11 @@ document.addEventListener("DOMContentLoaded", function() {
         thead.className = 'table-dark';
         thead.innerHTML = `
             <tr>
-                <th>预订编号</th>
-                <th>设备ID</th>
-                <th>开始时间</th>
-                <th>结束时间</th>
-                <th>状态</th>
-                <th>操作</th>
+                <th>equipment Name</th>
+                <th>startTime</th>
+                <th>endTime</th>
+                <th>status</th>
+                <th>action</th>
             </tr>
         `;
         table.appendChild(thead);
@@ -67,8 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
         bookings.forEach(booking => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${booking.bookingId}</td>
-                <td>${booking.equipmentId}</td>
+                <td>${booking.equipmentName}</td>
                 <td>${booking.startTime}</td>
                 <td>${booking.endTime}</td>
                 <td>${booking.status}</td>

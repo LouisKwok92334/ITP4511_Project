@@ -44,7 +44,7 @@ public class BookingDB {
     
     public List<BookingBean> getActiveBookingsByUser(int userId) {
         List<BookingBean> bookings = new ArrayList<>();
-        String sql = "SELECT * FROM Bookings WHERE user_id = ? AND status IN ('approved', 'pending')";
+        String sql = "SELECT b.*, e.name AS equipment_name FROM Bookings b JOIN Equipment e ON b.equipment_id = e.equipment_id WHERE b.user_id = ? AND b.status IN ('approved', 'pending')";
          try (Connection connection = DriverManager.getConnection(dburl, dbUser, dbPassword); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, userId);
             ResultSet rs = statement.executeQuery();
@@ -53,6 +53,7 @@ public class BookingDB {
                 booking.setBookingId(rs.getInt("booking_id"));
                 booking.setUserId(rs.getInt("user_id"));
                 booking.setEquipmentId(rs.getInt("equipment_id"));
+                booking.setEquipmentName(rs.getString("equipment_name"));
                 booking.setStartTime(rs.getTimestamp("start_time"));
                 booking.setEndTime(rs.getTimestamp("end_time"));
                 booking.setDeliveryLocation(rs.getString("delivery_location"));
